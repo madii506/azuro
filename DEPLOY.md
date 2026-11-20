@@ -21,7 +21,7 @@ Static pages plus four Vercel functions. Built and tested locally against a simu
 | `PLATFORM_KEY` | yes | The pool wallet's secret key (base58 or JSON array). Make a brand-new wallet just for this. Never reuse a personal wallet. Every backing buy is paid from it. |
 | `DATABASE_URL` | yes | Postgres connection string. Neon from the Vercel Marketplace works; tables are created on first use. |
 | `RPC_URL` | strongly recommended | A paid Solana RPC (Helius or similar). Public RPCs rate-limit and drop sends. |
-| `SITE_URL` | yes | The final domain, e.g. `https://azuro.vercel.app`. Each coin's metadata link points here forever, so set it before the first launch. |
+| `SITE_URL` | yes | The final domain, e.g. `https://azuro-iota.vercel.app`. Each coin's metadata link points here forever, so set it before the first launch. |
 | `BACK_SOL` | no | Size of each backing buy. Default `0.5`. |
 | `DEV_MAX_SOL` | no | Creator buy cap. Default `0.5`. |
 | `BACKED_PER_DAY` | no | Backed launches per 24 h across the site. Default `40`. |
@@ -36,7 +36,7 @@ Static pages plus four Vercel functions. Built and tested locally against a simu
 1. Push this folder to a new GitHub repo. `node_modules` is ignored.
 2. Import the repo in Vercel. No build command is needed; Node 22.
 3. Add the database (Neon) and the variables above, then redeploy.
-4. Change `https://azuro.vercel.app` in the `og:image` tags of `index.html`, `home.html` and `app.html` if the domain is different.
+4. Change `https://azuro-iota.vercel.app` in the `og:image` tags of `index.html`, `home.html` and `app.html` if the domain is different.
 5. Fund the pool wallet. Each backed launch costs the pool 1.5 SOL plus a few thousandths for fees.
 6. Do one launch yourself with a small creator buy, and check it on Solscan and pump.fun before announcing.
 
