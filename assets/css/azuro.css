@@ -1,0 +1,95 @@
+/* AZURO: a woodblock print you can trade on. Washi paper, sumi ink, indigo, one vermilion. No glow, no soft gradients:
+   depth comes from ink lines, hard offsets and the paper itself. */
+@font-face{font-family:"Mincho";src:url(/assets/fonts/mincho-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Mincho";src:url(/assets/fonts/mincho-600.woff2) format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"Mincho";src:url(/assets/fonts/mincho-800.woff2) format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:"Brush";src:url(/assets/fonts/brush.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Mono";src:url(/assets/fonts/jbm.woff2) format("woff2");font-weight:100 800;font-display:swap}
+
+:root{
+  --paper:#ece1c6;--paper2:#e2d3b1;--paper3:#f5eedd;--card:#f2e9d3;
+  --ink:#1c1b22;--ink2:#3b3843;--ink3:#686270;--ink4:#99929f;
+  --indigo:#1e2d52;--indigo2:#2e4377;--indigo3:#5f77a8;--sea:#22355f;--sea2:#a6b6d3;
+  --red:#c8392b;--red2:#a72d21;--gold:#d1a544;--gold2:#f0d27a;--gold3:#a97b26;
+  --stone:#a3abb4;--stone2:#59606e;--up:#2d7a4c;--down:#c8392b;
+  --line:rgba(28,27,34,.16);--line2:rgba(28,27,34,.34);
+  --serif:"Mincho","Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+  --brush:"Brush","Mincho",serif;
+  --mono:"Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --pad:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:var(--serif);color:var(--ink);background:var(--paper) url(/assets/img/washi.jpg) 0 0/640px 640px;-webkit-font-smoothing:antialiased;overflow-x:clip;line-height:1.55}
+a{color:inherit}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:var(--paper3)}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--mono);font-feature-settings:"tnum" 1}
+.k{font-family:var(--brush);font-weight:400}
+
+/* ---------- small parts ---------- */
+.seal{display:inline-grid;place-items:center;width:1.9em;height:1.9em;background:var(--red);color:var(--paper3);font-family:var(--brush);line-height:1;border-radius:.12em;
+  box-shadow:inset 0 0 0 .09em var(--red),inset 0 0 0 .14em var(--paper3);font-size:inherit;position:relative}
+.seal::after{content:"";position:absolute;inset:0;border-radius:inherit;background:url(/assets/img/grain.png) 0 0/90px;mix-blend-mode:multiply;opacity:.35;pointer-events:none}
+.eyebrow{display:flex;align-items:center;gap:12px;font:600 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+.eyebrow b{color:var(--red);font-weight:700}
+.eyebrow .seal{font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 24px;font:700 15px/1 var(--serif);letter-spacing:.02em;border:2px solid var(--ink);
+  border-radius:3px;background:var(--paper3);color:var(--ink);text-decoration:none;box-shadow:4px 4px 0 var(--ink);transition:transform .18s,box-shadow .18s,background .18s;white-space:nowrap}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn.red{background:var(--red);color:var(--paper3)}
+.btn.ink{background:var(--ink);color:var(--paper3);box-shadow:4px 4px 0 var(--red)}
+.btn.ink:hover{box-shadow:6px 6px 0 var(--red)}
+.btn.sm{min-height:44px;padding:0 16px;font-size:14px;box-shadow:3px 3px 0 var(--ink)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:30px;padding:0 12px;border:1.5px solid var(--line2);border-radius:999px;font:600 12px/1 var(--mono);letter-spacing:.06em;color:var(--ink2);background:rgba(245,238,221,.6)}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--ink4);font-style:normal}
+.chip.live i{background:var(--up);animation:pulse 1.6s steps(2) infinite}
+.chip.off i{background:var(--red)}
+@keyframes pulse{50%{opacity:.25}}
+.rule{height:0;border-top:1.5px solid var(--ink);opacity:.85}
+.up{color:var(--up)}.down{color:var(--down)}
+.dash{color:var(--ink4)}
+
+/* ---------- stones: the wall that grows with every launch ---------- */
+.wall{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start}
+.stone{position:relative;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 14px;min-width:64px;border:2px solid var(--ink);border-radius:5px 4px 6px 4px;
+  background:linear-gradient(#bcc2c8,#8e98a4);color:var(--ink);font:700 12px/1 var(--mono);letter-spacing:.06em;text-decoration:none;transition:transform .15s}
+.stone:nth-child(3n){border-radius:4px 7px 4px 5px;padding:0 20px}
+.stone:nth-child(5n){padding:0 10px}
+.stone:nth-child(7n+2){padding:0 24px}
+.stone:hover{transform:translateY(-2px)}
+.stone.gold{background:linear-gradient(#f0d27a,#c39437);border-color:var(--ink)}
+.stone.grad{background:linear-gradient(#5f77a8,#2e4377);color:var(--paper3)}
+.stone.ghost{border-style:dashed;background:transparent;color:var(--ink4);border-color:var(--ink4)}
+.stone.new{animation:setin .6s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes setin{from{transform:translateY(-40px) rotate(-4deg);opacity:0}}
+
+/* ---------- coin plaque (fuda) ---------- */
+.fuda{position:relative;display:flex;flex-direction:column;border:2px solid var(--ink);background:var(--paper3);border-radius:3px;box-shadow:5px 5px 0 var(--ink);text-decoration:none;color:var(--ink);min-width:0;transition:transform .18s,box-shadow .18s}
+.fuda:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.fuda .top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;background:var(--indigo);color:var(--paper3);border-bottom:2px solid var(--ink);font:700 14px/1 var(--mono);letter-spacing:.04em}
+.fuda .top .age{font-weight:500;font-size:11px;opacity:.75}
+.fuda .body{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:12px}
+.fuda .body img{width:64px;height:64px;border:2px solid var(--ink);border-radius:2px;object-fit:cover;background:var(--paper2)}
+.fuda .nm{font-weight:800;font-size:16px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fuda .stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:6px;font:500 12px/1.3 var(--mono);color:var(--ink2)}
+.fuda .stats b{display:block;font-weight:700;color:var(--ink);font-size:13px}
+.fuda .bar{height:8px;margin:0 12px 12px;border:1.5px solid var(--ink);background:var(--paper);position:relative;overflow:hidden}
+.fuda .bar i{position:absolute;inset:0 auto 0 0;background:repeating-linear-gradient(-45deg,var(--indigo2) 0 5px,var(--indigo) 5px 10px)}
+.fuda .stamp{position:absolute;right:-8px;top:34px;transform:rotate(8deg);font-size:13px}
+
+/* ---------- toast ---------- */
+#toasts{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(92vw,460px);pointer-events:none}
+.toast{pointer-events:auto;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--paper3);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-size:14px;animation:tin .35s cubic-bezier(.2,1.3,.4,1) both}
+.toast .seal{font-size:13px;flex:none}
+.toast.bad .seal{background:var(--ink)}
+.toast a{font-family:var(--mono);font-size:12px}
+@keyframes tin{from{transform:translateY(16px);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
