@@ -14,19 +14,19 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
 <link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <link rel="preload" href="/assets/fonts/mincho-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/azuro.css?v=1">
+<link rel="stylesheet" href="/assets/css/azuro.css?v=2">
 <link rel="stylesheet" href="/assets/css/term.css?v=1">
 </head>
 <body class="term">
 <header class="tb">
   <a class="brand" href="/home" aria-label="Azuro home"><img src="/assets/img/seal.png" alt="" width="34" height="34"><span><b>AZURO</b><small>TERMINAL</small></span></a>
   <nav class="tabs" id="tabs" aria-label="Terminal views">
-    <a href="#market" data-v="market"><span class="k">市</span><span class="lbl">Market</span></a>
-    <a href="#launch" data-v="launch"><span class="k">発</span><span class="lbl">Launch</span></a>
-    <a href="#pool" data-v="pool"><span class="k">底</span><span class="lbl">Pool</span></a>
-    <a href="#wall" data-v="wall"><span class="k">壁</span><span class="lbl">Wall</span></a>
-    <a href="#ledger" data-v="ledger"><span class="k">帳</span><span class="lbl">Ledger</span></a>
-    <a href="#docs" data-v="docs"><span class="k">書</span><span class="lbl">Docs</span></a>
+    <a href="#market" data-v="market"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="12" width="4.5" height="8.5" rx=".6"/><rect x="9.75" y="7.5" width="4.5" height="13" rx=".6"/><rect x="16" y="3.5" width="4.5" height="17" rx=".6"/></svg></span><span class="lbl">Market</span></a>
+    <a href="#launch" data-v="launch"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 8h-4.5v9h-5v-9H5z"/></svg></span><span class="lbl">Launch</span></a>
+    <a href="#pool" data-v="pool"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.4"/><rect x="2.6" y="16.4" width="5.6" height="4" rx=".9"/><rect x="9.2" y="16.4" width="5.6" height="4" rx=".9"/><rect x="15.8" y="16.4" width="5.6" height="4" rx=".9"/></svg></span><span class="lbl">Pool</span></a>
+    <a href="#wall" data-v="wall"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="4" width="9" height="4.6" rx=".5"/><rect x="2.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="7.5" y="9.7" width="9" height="4.6" rx=".5"/><rect x="17.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="2.5" y="15.4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="15.4" width="9" height="4.6" rx=".5"/></svg></span><span class="lbl">Wall</span></a>
+    <a href="#ledger" data-v="ledger"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="3" rx=".6"/><rect x="3.5" y="10.5" width="17" height="3" rx=".6"/><rect x="3.5" y="16.5" width="11" height="3" rx=".6"/></svg></span><span class="lbl">Ledger</span></a>
+    <a href="#docs" data-v="docs"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.5 2.5h9l4.5 4.5v14.5h-13.5zM8.5 11h7v2h-7zM8.5 14.6h7v2h-7zM8.5 18.2h4.5v1.8H8.5z"/></svg></span><span class="lbl">Docs</span></a>
   </nav>
   <div class="right">
     <button class="search" id="openPal" type="button" aria-label="Search coins and commands"><span>Search coins</span><kbd>/</kbd></button>
@@ -38,12 +38,12 @@
 <main class="view" id="view" tabindex="-1"></main>
 
 <nav class="bottomtabs" id="btabs" aria-label="Terminal views">
-  <a href="#market" data-v="market"><span class="k">市</span>Market</a>
-  <a href="#launch" data-v="launch"><span class="k">発</span>Launch</a>
-  <a href="#pool" data-v="pool"><span class="k">底</span>Pool</a>
-  <a href="#wall" data-v="wall"><span class="k">壁</span>Wall</a>
-  <a href="#ledger" data-v="ledger"><span class="k">帳</span>Ledger</a>
-  <a href="#docs" data-v="docs"><span class="k">書</span>Docs</a>
+  <a href="#market" data-v="market"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="12" width="4.5" height="8.5" rx=".6"/><rect x="9.75" y="7.5" width="4.5" height="13" rx=".6"/><rect x="16" y="3.5" width="4.5" height="17" rx=".6"/></svg></span>Market</a>
+  <a href="#launch" data-v="launch"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 8h-4.5v9h-5v-9H5z"/></svg></span>Launch</a>
+  <a href="#pool" data-v="pool"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.4"/><rect x="2.6" y="16.4" width="5.6" height="4" rx=".9"/><rect x="9.2" y="16.4" width="5.6" height="4" rx=".9"/><rect x="15.8" y="16.4" width="5.6" height="4" rx=".9"/></svg></span>Pool</a>
+  <a href="#wall" data-v="wall"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="4" width="9" height="4.6" rx=".5"/><rect x="2.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="7.5" y="9.7" width="9" height="4.6" rx=".5"/><rect x="17.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="2.5" y="15.4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="15.4" width="9" height="4.6" rx=".5"/></svg></span>Wall</a>
+  <a href="#ledger" data-v="ledger"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="3" rx=".6"/><rect x="3.5" y="10.5" width="17" height="3" rx=".6"/><rect x="3.5" y="16.5" width="11" height="3" rx=".6"/></svg></span>Ledger</a>
+  <a href="#docs" data-v="docs"><span class="k"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.5 2.5h9l4.5 4.5v14.5h-13.5zM8.5 11h7v2h-7zM8.5 14.6h7v2h-7zM8.5 18.2h4.5v1.8H8.5z"/></svg></span>Docs</a>
 </nav>
 
 <div class="modal" id="pal" role="dialog" aria-modal="true" aria-label="Search">
@@ -57,6 +57,6 @@
 
 <script src="/assets/js/config.js?v=1"></script>
 <script src="/assets/js/wallet.js?v=1"></script>
-<script src="/assets/js/term.js?v=1"></script>
+<script src="/assets/js/term.js?v=2"></script>
 </body>
 </html>
