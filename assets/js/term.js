@@ -8,11 +8,14 @@
   const fmt = (n, d = 2) => n == null || !isFinite(n) ? '—' : Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
   const usd = n => n == null || !isFinite(n) ? '—' : n >= 1e6 ? '$' + fmt(n / 1e6, 2) + 'M' : n >= 1e4 ? '$' + fmt(n / 1e3, 1) + 'K' : n >= 1 ? '$' + fmt(n, 0) : '$' + fmt(n, 2);
   const SUB = '₀₁₂₃₄₅₆₇₈₉';
-  function px(n, pre = '') {   // tiny prices: 0.0₅4353
+  // drawn icons for the seals and headers
+  const I = { mark: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.4"/><rect x="2.6" y="16.4" width="5.6" height="4" rx=".9"/><rect x="9.2" y="16.4" width="5.6" height="4" rx=".9"/><rect x="15.8" y="16.4" width="5.6" height="4" rx=".9"/></svg>', launch: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 8h-4.5v9h-5v-9H5z"/></svg>', market: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="12" width="4.5" height="8.5" rx=".6"/><rect x="9.75" y="7.5" width="4.5" height="13" rx=".6"/><rect x="16" y="3.5" width="4.5" height="17" rx=".6"/></svg>', wall: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="4" width="9" height="4.6" rx=".5"/><rect x="2.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="7.5" y="9.7" width="9" height="4.6" rx=".5"/><rect x="17.5" y="9.7" width="4" height="4.6" rx=".5"/><rect x="2.5" y="15.4" width="9" height="4.6" rx=".5"/><rect x="12.5" y="15.4" width="9" height="4.6" rx=".5"/></svg>', list: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="3" rx=".6"/><rect x="3.5" y="10.5" width="17" height="3" rx=".6"/><rect x="3.5" y="16.5" width="11" height="3" rx=".6"/></svg>', doc: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M5.5 2.5h9l4.5 4.5v14.5h-13.5zM8.5 11h7v2h-7zM8.5 14.6h7v2h-7zM8.5 18.2h4.5v1.8H8.5z"/></svg>', pulse: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13h4l2.5-7 5 13 2.5-6h5"/></svg>', top: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l6.5 7.5h-4.2v5.5H9.7V10H5.5z"/><rect x="4" y="18" width="16" height="3.2" rx=".6"/></svg>', climb: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 21v-4.5h5V12h5V7.5h5V3h4v18z"/></svg>', new: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>', flame: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 2c.6 3.6 6 5.6 6 11.6A6.5 6.5 0 0 1 5.5 13.6c0-2.8 1.7-4.7 2.9-6.4.2 2.4 1.3 3.7 2.8 4.1-.9-3.2.5-6.4 1.3-9.3z"/></svg>', stone: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7.5" width="19" height="9.5" rx="2"/></svg>', plus: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5h4v6.5h6.5v4H14v6.5h-4V14H3.5v-4H10z"/></svg>', close: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>', empty: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.2"/></svg>', ok: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>', no: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>', wait: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2.5h12v2.8l-4.4 6.7 4.4 6.7v2.8H6v-2.8l4.4-6.7L6 5.3z"/></svg>', hash: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3l-2 18M16.5 3l-2 18M4 8.5h16.5M3.5 15.5H20"/></svg>', sum: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3.5h14v3.5H10.5l5 5-5 5H19v3.5H5v-3l6.2-5.5L5 6.5z"/></svg>', coin: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 3.5a8.5 8.5 0 1 1 0 17a8.5 8.5 0 1 1 0-17zm0 3.6a4.9 4.9 0 1 0 0 9.8a4.9 4.9 0 1 0 0-9.8z"/></svg>', warn: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2.5l10.5 18.5h-21zM10.8 9.5h2.4v5.6h-2.4zM10.8 16.6h2.4v2.4h-2.4z"/></svg>', rules: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 21.5V9.5a6.5 6.5 0 0 1 13 0v12z"/></svg>' };
+  function px(n, pre = '') {   // tiny prices, the way Dexscreener writes them: 0.0₅4353 = 0.000004353 (the subscript counts every zero after the point)
     if (n == null || !isFinite(n) || n <= 0) return '—';
     if (n >= 0.01) return pre + fmt(n, n >= 1 ? 2 : 4);
-    const z = Math.floor(-Math.log10(n)) - 1, d = String(Math.round(n * 10 ** (z + 5))).slice(0, 4);
-    return pre + '0.0' + String(z).split('').map(c => SUB[c]).join('') + d;
+    const [m, e] = n.toExponential(3).split('e'), z = -Number(e) - 1;
+    if (z < 3) return pre + n.toFixed(z + 4);
+    return pre + '0.0' + String(z).split('').map(c => SUB[c]).join('') + m.replace('.', '');
   }
   const solf = (n, d = 3) => n == null || !isFinite(n) ? '—' : fmt(n, d) + ' SOL';
   const short = a => a ? a.slice(0, 4) + '…' + a.slice(-4) : '—';
@@ -25,7 +28,7 @@
   function toast(text, kind, link) {
     const t = document.createElement('div');
     t.className = 'toast' + (kind === 'bad' ? ' bad' : '');
-    t.innerHTML = `<span class="seal">${kind === 'bad' ? '否' : '済'}</span><div>${esc(text)}${link ? `<br><a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(link.text)}</a>` : ''}</div>`;
+    t.innerHTML = `<span class="seal">${kind === 'bad' ? I.no : I.ok}</span><div>${esc(text)}${link ? `<br><a href="${esc(link.href)}" target="_blank" rel="noopener">${esc(link.text)}</a>` : ''}</div>`;
     const box = $('#toasts'); while (box.children.length >= 2) box.firstChild.remove();
     box.appendChild(t); say(text);
     setTimeout(() => t.remove(), kind === 'bad' ? 9000 : 6500);
@@ -137,7 +140,7 @@
   }
   addEventListener('hashchange', route);
 
-  // ---------------------------------------------------------------- 市 market
+  // ---------------------------------------------------------------- market
   const FILTERS = [['all', 'All'], ['new', 'New'], ['rising', 'Rising'], ['near', 'Near graduation'], ['grad', 'Graduated'], ['mine', 'Mine'], ['stars', '★ Watching']];
   const SORTS = { new: c => new Date(c.created).getTime(), mcap: c => (c.curve && c.curve.mcapUsd) || 0, floor: c => (c.curve && c.curve.aboveFloor) || 0, curve: c => (c.curve && c.curve.progress) || 0, ticker: c => c.ticker };
   function filtered() {
@@ -154,14 +157,14 @@
     return L;
   }
   function market() {
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">市</span>The market</h1><p>Every coin launched on Azuro, live from its bonding curve. The floor column shows how far each coin trades above the price its backing can never fall below.</p></div>
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.market}</span>The market</h1><p>Every coin launched on Azuro, live from its bonding curve. The floor column shows how far each coin trades above the price its backing can never fall below.</p></div>
       <div class="chips" id="fil">${FILTERS.map(([k, l]) => `<button type="button" data-f="${k}" class="${S.filter === k ? 'on' : ''}">${l}</button>`).join('')}</div></div>
       <div class="boards" id="boards"></div>
       <div class="kv" id="mkv" style="margin-bottom:22px"><div><b>—</b><small>Coins set</small></div><div><b>—</b><small>SOL under coins</small></div><div><b>—</b><small>Tokens burned</small></div><div><b>—</b><small>Pool</small></div></div>
-      <div class="panel"><div class="ph"><span><span class="k">市</span>Board</span><span id="mcount">loading</span></div>
+      <div class="panel"><div class="ph"><span><span class="k">${I.market}</span>Board</span><span id="mcount">loading</span></div>
       <div class="mkwrap"><table class="mk" id="mk"><thead><tr><th>#</th><th data-s="ticker">Coin</th><th data-s="new">Age</th><th data-s="mcap">Market cap</th><th>Price</th><th data-s="floor">Above floor</th><th data-s="curve">Curve</th><th>Backed</th><th></th></tr></thead><tbody></tbody></table></div>
       <div class="cards" id="mcards" style="padding:14px"></div><div id="mempty"></div></div>
-      <div class="panel pulse" style="margin-top:22px"><div class="ph"><span><span class="k">流</span>Pulse · every trade on every Azuro coin</span><span id="pst">connecting</span></div><div class="pb" id="pulse"><div class="dash">Trades stream in here the moment they land on pump.fun.</div></div></div>`;
+      <div class="panel pulse" style="margin-top:22px"><div class="ph"><span><span class="k">${I.pulse}</span>Pulse · every trade on every Azuro coin</span><span id="pst">connecting</span></div><div class="pb" id="pulse"><div class="dash">Trades stream in here the moment they land on pump.fun.</div></div></div>`;
     $('#fil').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; S.filter = b.dataset.f; $$('#fil button').forEach(x => x.classList.toggle('on', x === b)); draw(); });
     $('#mk thead').addEventListener('click', e => { const th = e.target.closest('th[data-s]'); if (!th) return; if (S.sort === th.dataset.s) S.dir *= -1; else { S.sort = th.dataset.s; S.dir = th.dataset.s === 'ticker' ? 1 : -1; } draw(); });
     $('#mk tbody').addEventListener('click', e => { const st = e.target.closest('[data-star]'); if (st) { e.stopPropagation(); const on = star(st.dataset.star); toast(on ? 'Added to your watchlist.' : 'Removed from your watchlist.'); draw(); return; } const b = e.target.closest('[data-buy]'); const tr = e.target.closest('tr[data-m]'); if (b) { e.stopPropagation(); location.hash = 'coin/' + b.dataset.buy; return; } if (tr) location.hash = 'coin/' + tr.dataset.m; });
@@ -190,7 +193,7 @@
             <td>${ago(c.created)}</td><td class="${fl}">${usd(v.mcapUsd)}</td><td class="${fl}">${px(v.priceUsd, '$')}</td>
             <td><span class="flr"><i style="--w:${w.toFixed(0)}%"></i>${v.aboveFloor ? '×' + fmt(v.aboveFloor, 2) : '—'}</span></td>
             <td><span class="cv"><i style="--w:${Math.round((v.progress || 0) * 100)}%"></i>${v.complete ? 'pool' : Math.round((v.progress || 0) * 100) + '%'}</span></td>
-            <td>${c.sig ? `<a class="stampok" href="https://solscan.io/tx/${esc(c.sig)}" target="_blank" rel="noopener" title="The backing, on Solscan" onclick="event.stopPropagation()">底</a>` : '<span class="dash">—</span>'}</td>
+            <td>${c.sig ? `<a class="stampok" href="https://solscan.io/tx/${esc(c.sig)}" target="_blank" rel="noopener" title="The backing, on Solscan" onclick="event.stopPropagation()">${I.mark}</a>` : '<span class="dash">—</span>'}</td>
             <td><button class="btn sm red" type="button" data-buy="${esc(c.mint)}">Trade</button></td></tr>`;
         }).join('');
         $('#mcards').innerHTML = L.map(c => fudaCard(c)).join('');
@@ -213,9 +216,9 @@
       const hi = L.slice().sort((a, b) => (b.curve.aboveFloor || 0) - (a.curve.aboveFloor || 0)).slice(0, 3);
       const near = L.filter(c => !c.curve.complete).sort((a, b) => (b.curve.progress || 0) - (a.curve.progress || 0)).slice(0, 3);
       const fresh = S.coins.slice(0, 3);
-      el.innerHTML = `<div class="board"><h4><span class="k">高</span>Highest above floor</h4>${hi.map(c => row(c, '×' + fmt(c.curve.aboveFloor, 2))).join('')}</div>
-        <div class="board"><h4><span class="k">昇</span>Closest to graduating</h4>${near.map(c => row(c, `<i class="mini" style="--w:${Math.round(c.curve.progress * 100)}%"></i>${Math.round(c.curve.progress * 100)}%`)).join('') || '<p class="dash">—</p>'}</div>
-        <div class="board"><h4><span class="k">新</span>Newest stones</h4>${fresh.map(c => row(c, ago(c.created))).join('')}</div>`;
+      el.innerHTML = `<div class="board"><h4><span class="k">${I.top}</span>Highest above floor</h4>${hi.map(c => row(c, '×' + fmt(c.curve.aboveFloor, 2))).join('')}</div>
+        <div class="board"><h4><span class="k">${I.climb}</span>Closest to graduating</h4>${near.map(c => row(c, `<i class="mini" style="--w:${Math.round(c.curve.progress * 100)}%"></i>${Math.round(c.curve.progress * 100)}%`)).join('') || '<p class="dash">—</p>'}</div>
+        <div class="board"><h4><span class="k">${I.new}</span>Newest stones</h4>${fresh.map(c => row(c, ago(c.created))).join('')}</div>`;
     }
     // every trade on every Azuro coin, live from PumpPortal's public feed; rows flash as their coin trades
     let pulseKeys = '';
@@ -253,13 +256,13 @@
     return `<a class="fuda" href="#coin/${esc(c.mint)}"><div class="top"><span>$${esc(c.ticker)}</span><span class="age">${ago(c.created)}</span></div>` +
       `<div class="body"><img src="${esc(c.img)}" alt="" loading="lazy" width="64" height="64"><div style="min-width:0"><div class="nm">${esc(c.name)}</div>` +
       `<div class="stats"><span>MCAP<b>${usd(v.mcapUsd)}</b></span><span>ABOVE FLOOR<b>${v.aboveFloor ? '×' + fmt(v.aboveFloor, 2) : '—'}</b></span></div></div></div>` +
-      `<div class="bar"><i style="width:${Math.round((v.progress || 0) * 100)}%"></i></div><span class="seal stamp">底</span></a>`;
+      `<div class="bar"><i style="width:${Math.round((v.progress || 0) * 100)}%"></i></div><span class="seal stamp">${I.mark}</span></a>`;
   }
 
   // ---------------------------------------------------------------- share card
   // drawn on a canvas from the coin's own image and live numbers; saved as a PNG the user can post anywhere
   async function shareCard(c, extra) {
-    try { await Promise.all(['800 60px Mincho', '600 20px Mono', '400 40px Brush'].map(f => document.fonts.load(f, '底AZURO$'))); } catch { }
+    try { await Promise.all(['800 60px Mincho', '600 20px Mono', '400 40px Brush'].map(f => document.fonts.load(f, 'AZURO$'))); } catch { }
     const W = 1200, H = 630, cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
     const img = src => new Promise(ok => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
     const [paper, art, seal] = await Promise.all([img('/assets/img/washi.jpg'), img(c.img), img('/assets/img/seal.png')]);
@@ -286,12 +289,12 @@
     return cv;
   }
 
-  // ---------------------------------------------------------------- 発 launch
+  // ---------------------------------------------------------------- launch
   function launch() {
     const D = S.draft;
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">発</span>Launch a coin</h1><p>One form, one signature. Your coin is created on pump.fun and backed in the same transaction: three 0.5 SOL buys from the pool, every token burned.</p></div></div>
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.launch}</span>Launch a coin</h1><p>One form, one signature. Your coin is created on pump.fun and backed in the same transaction: three 0.5 SOL buys from the pool, every token burned.</p></div></div>
     <div class="lgrid">
-      <div class="panel"><div class="ph"><span><span class="k">発</span>Your coin</span><span id="lstate">draft</span></div><div class="pb">
+      <div class="panel"><div class="ph"><span><span class="k">${I.launch}</span>Your coin</span><span id="lstate">draft</span></div><div class="pb">
         <div class="field"><label>Image <em>PNG, JPG, GIF or WebP · cropped square</em></label>
           <div class="drop${D.image ? ' has' : ''}" id="drop"><div class="ph" id="imgph">${D.image ? `<img src="${D.image}" alt="">` : '＋'}</div><div><b>${D.image ? 'Image ready' : 'Add an image'}</b><span>${D.image ? 'Click to change it.' : 'Drop it here or click. It must not be on Azuro already.'}</span></div><input type="file" id="file" accept="image/png,image/jpeg,image/gif,image/webp" aria-label="Coin image"></div></div>
         <div class="two"><div class="field"><label for="fname">Name <em id="nlen">0/32</em></label><input class="inp" id="fname" maxlength="32" placeholder="Sakura Floor" value="${esc(D.name)}"></div>
@@ -309,7 +312,7 @@
       </div></div>
       <div class="preview" id="lprev">
         <div id="lcard"></div>
-        <div class="panel"><div class="ph"><span><span class="k">一</span>The launch transaction</span><span id="lbytes">one transaction</span></div><div class="pb"><ol class="anat" id="lanat"></ol></div></div>
+        <div class="panel"><div class="ph"><span><span class="k">${I.list}</span>The launch transaction</span><span id="lbytes">one transaction</span></div><div class="pb"><ol class="anat" id="lanat"></ol></div></div>
       </div>
     </div>`;
     const set = (k, v) => { D[k] = v; paint(); };
@@ -395,14 +398,14 @@
     function anatomy(E) {
       const p = prepared, n = (S.rules && S.rules.rules && S.rules.rules.backBuys) || 3, back = (S.rules && S.rules.rules && S.rules.rules.backSol) || 0.5;
       const rows = p ? p.anatomy : [{ k: 'create', who: 'you' }, ...Array.from({ length: n }, (_, i) => ({ k: 'back', who: 'pool', n: i + 1, sol: back, tokens: E && E.buys[i], est: 1 })), { k: 'burn', who: 'pool', tokens: E && E.burned, est: 1 }, { k: 'close', who: 'pool' }].concat(+D.dev > 0 ? [{ k: 'dev', who: 'you', sol: +D.dev, tokens: E && E.devTok, est: 1 }] : []);
-      const K = { create: '発', back: '買', burn: '焼', close: '閉', dev: '開' };
+      const K = { create: I.launch, back: I.stone, burn: I.flame, close: I.close, dev: I.plus };
       $('#lanat').innerHTML = rows.map(r => `<li><span class="seal${r.who === 'you' ? ' you' : ''}">${K[r.k]}</span><span>${{ create: `Create $${esc(D.ticker || 'TICKER')} on pump.fun`, back: `Backing buy ${r.n} of ${n}`, burn: 'Burn every token the pool bought', close: 'Close the pool\'s token account', dev: 'Your buy, right behind the backing' }[r.k]}<small>${r.who === 'you' ? 'signed by you' : 'paid by the pool'}${r.tokens ? ' · ' + (r.est ? '≈' : '') + tok(r.tokens) + ' tokens' : ''}</small></span><b>${r.sol ? fmt(r.sol, 3) + ' SOL' : r.k === 'burn' && r.tokens ? (r.est ? '≈' : '') + tok(r.tokens) : ''}</b></li>`).join('') +
-        (p ? `<li><span class="seal">底</span><span>The floor this sets<small>${fmt((p.numbers.floorPrice / p.numbers.startPrice - 1) * 100, 1)}% over a plain launch price, and the curve can never go below it</small></span><b>${px(p.numbers.floorPrice * (p.numbers.sol || 0), '$')}</b></li>`
-          : E ? `<li><span class="seal">底</span><span>The floor this sets<small>about ${fmt((E.floor / E.start - 1) * 100, 1)}% over a plain launch price, for good</small></span><b>≈${px(E.floorUsd, '$')}</b></li>` : '');
+        (p ? `<li><span class="seal">${I.mark}</span><span>The floor this sets<small>${fmt((p.numbers.floorPrice / p.numbers.startPrice - 1) * 100, 1)}% over a plain launch price, and the curve can never go below it</small></span><b>${px(p.numbers.floorPrice * (p.numbers.sol || 0), '$')}</b></li>`
+          : E ? `<li><span class="seal">${I.mark}</span><span>The floor this sets<small>about ${fmt((E.floor / E.start - 1) * 100, 1)}% over a plain launch price, for good</small></span><b>≈${px(E.floorUsd, '$')}</b></li>` : '');
       $('#lbytes').textContent = p ? (p.bundled ? 'two transactions, one bundle' : `one transaction · ${p.bytes} bytes`) : 'one transaction';
     }
     function step(k, state) { const order = ['prep', 'sign', 'back', 'live']; $$('#lstep li').forEach(li => { const i = order.indexOf(li.dataset.k), j = order.indexOf(k); li.className = i < j || (i === j && state === 'done') ? 'done' : i === j ? 'on' : ''; }); }
-    function msg(text, kind) { $('#lmsg').innerHTML = text ? `<div class="msg ${kind || ''}"><span class="seal">${kind === 'bad' ? '否' : kind === 'good' ? '済' : '待'}</span><div>${text}</div></div>` : ''; }
+    function msg(text, kind) { $('#lmsg').innerHTML = text ? `<div class="msg ${kind || ''}"><span class="seal">${kind === 'bad' ? I.no : kind === 'good' ? I.ok : I.wait}</span><div>${text}</div></div>` : ''; }
     $('#lgo').addEventListener('click', async () => {
       if (landed) { launch(); return; }
       if (!W.W.addr) return openPicker();
@@ -442,10 +445,10 @@
       rows.forEach((li, i) => { li.classList.remove('lit'); setTimeout(() => li.classList.add('lit'), 250 + i * 330); });
     }
     function receipt(p, r) {
-      $('#lcard').innerHTML = `<div class="receipt"><span class="seal big">底</span><div class="eyebrow"><b>RECEIPT</b> — backed launch</div><h3>$${esc(r.ticker || D.ticker)} is set on stone</h3>
+      $('#lcard').innerHTML = `<div class="receipt"><span class="seal big">${I.mark}</span><div class="eyebrow"><b>RECEIPT</b> — backed launch</div><h3>$${esc(r.ticker || D.ticker)} is set on stone</h3>
         <dl><dt>Mint</dt><dd>${esc(r.mint)}</dd><dt>Backing</dt><dd>${p.anatomy.filter(a => a.k === 'back').map(a => fmt(a.sol, 3)).join(' + ')} SOL</dd>
         <dt>Burned</dt><dd>${tok(p.numbers.burned)} tokens</dd><dt>Your buy</dt><dd>${p.numbers.devSol ? fmt(p.numbers.devSol, 3) + ' SOL' : 'none'}</dd><dt>Floor</dt><dd>${px(p.numbers.floorPrice * (p.numbers.sol || 0), '$')}</dd></dl>
-        <div class="rstones">${p.anatomy.filter(a => a.k === 'back').map((a, i) => `<i style="--i:${i}">${fmt(a.sol, 2)}</i>`).join('')}<span class="burnt">焼 <b id="rburn">0</b> burned</span></div>
+        <div class="rstones">${p.anatomy.filter(a => a.k === 'back').map((a, i) => `<i style="--i:${i}">${fmt(a.sol, 2)}</i>`).join('')}<span class="burnt">${I.flame} <b id="rburn">0</b> burned</span></div>
         <div class="acts"><a class="btn sm red" href="#coin/${esc(r.mint)}">Open the coin</a><button class="btn sm" type="button" id="rcard">Save share card</button><a class="btn sm" href="https://solscan.io/tx/${esc(r.sig)}" target="_blank" rel="noopener">Solscan</a><a class="btn sm" href="https://pump.fun/coin/${esc(r.mint)}" target="_blank" rel="noopener">pump.fun</a>
         <a class="btn sm" target="_blank" rel="noopener" href="https://x.com/intent/tweet?text=${encodeURIComponent(`I just launched $${r.ticker || D.ticker}, pre-backed: 1.5 SOL bought and burned in its launch transaction, so it has a floor from block one.`)}&url=${encodeURIComponent(location.origin + '/app#coin/' + r.mint)}">Share on X</a></div></div>`;
       setTimeout(() => countTo($('#rburn'), p.numbers.burned, tok), RM ? 0 : 1300);
@@ -478,13 +481,13 @@
         ${c.descr ? `<p style="margin:-4px 0 18px;color:var(--ink2);max-width:80ch">${esc(c.descr)}</p>` : ''}
         <div class="kv" id="ckv" style="margin-bottom:22px"><div><b>—</b><small>Price</small></div><div><b>—</b><small>Market cap</small></div><div><b>—</b><small>Above the floor</small></div><div><b>—</b><small>Bonding curve</small></div></div>
         <div class="cgrid"><div style="display:grid;gap:22px;min-width:0">
-          <div class="panel"><div class="ph"><span><span class="k">陽</span>Chart<span class="hide-m"> · 陽 up, 陰 down</span></span><div class="tf" id="tfs">${[[5, '5m'], [15, '15m'], [60, '1h']].map(([m, l]) => `<button type="button" data-m="${m}" class="${m === tf ? 'on' : ''}">${l}</button>`).join('')}</div></div><div class="pb"><div class="chart" id="chart"><svg id="csvg"></svg><div class="tip" id="ctip"></div></div></div></div>
-          <div class="panel trades"><div class="ph"><span><span class="k">流</span>Live trades</span><span id="wsst">connecting</span></div><div class="pb list" id="trl"><div class="dash">Trades appear here as they happen.</div></div></div>
-          <div class="panel"><div class="ph"><span><span class="k">帳</span>Top holders</span><span id="hcount"></span></div><div class="pb list" id="hol"></div></div>
+          <div class="panel"><div class="ph"><span><span class="k">${I.market}</span>Chart<span class="hide-m"> · ▲ up, ▼ down</span></span><div class="tf" id="tfs">${[[5, '5m'], [15, '15m'], [60, '1h']].map(([m, l]) => `<button type="button" data-m="${m}" class="${m === tf ? 'on' : ''}">${l}</button>`).join('')}</div></div><div class="pb"><div class="chart" id="chart"><svg id="csvg"></svg><div class="tip" id="ctip"></div></div></div></div>
+          <div class="panel trades"><div class="ph"><span><span class="k">${I.pulse}</span>Live trades</span><span id="wsst">connecting</span></div><div class="pb list" id="trl"><div class="dash">Trades appear here as they happen.</div></div></div>
+          <div class="panel"><div class="ph"><span><span class="k">${I.list}</span>Top holders</span><span id="hcount"></span></div><div class="pb list" id="hol"></div></div>
         </div><div style="display:grid;gap:22px;min-width:0">
           <div class="panel trade"><div class="tabs2"><button type="button" class="buy on" data-side="buy">Buy</button><button type="button" class="sell" data-side="sell">Sell</button></div><div class="pb" id="tpane"></div></div>
-          <div class="panel backing"><div class="ph"><span><span class="k">底</span>The backing</span><span>${c.sig ? 'confirmed' : 'pending'}</span></div><div class="pb" id="bk"></div></div>
-          <div class="panel"><div class="ph"><span><span class="k">数</span>The numbers</span></div><div class="pb list" id="cnum"></div></div>
+          <div class="panel backing"><div class="ph"><span><span class="k">${I.mark}</span>The backing</span><span>${c.sig ? 'confirmed' : 'pending'}</span></div><div class="pb" id="bk"></div></div>
+          <div class="panel"><div class="ph"><span><span class="k">${I.hash}</span>The numbers</span></div><div class="pb list" id="cnum"></div></div>
         </div></div>`;
       $('#cca').addEventListener('click', async () => { try { await navigator.clipboard.writeText(c.mint); toast('Address copied.'); } catch { toast(c.mint); } });
       $('#ccard').addEventListener('click', () => { const v = C.coin.curve || {}; shareCard(C.coin, [v.aboveFloor ? `trades ×${fmt(v.aboveFloor, 2)} above its floor` : `${tok(C.coin.burned)} tokens burned forever`, v.mcapUsd ? `market cap ${usd(v.mcapUsd)}` : `floor ${px(v.floorUsd, '$')}`]); });
@@ -507,10 +510,10 @@
       if (bk && !bk.dataset.done) {
         bk.dataset.done = 1;
         bk.innerHTML = `<div class="stones">${[1, 2, 3].map(i => `<i style="--i:${i - 1}">0.5</i>`).join('')}</div>
-        <div class="list"><div class="row"><span class="seal" style="font-size:12px">買</span><span>Bought by the pool</span><b>${c.backSol ? fmt(c.backSol, 3) + ' SOL' : '—'}</b><span></span></div>
-        <div class="row"><span class="seal" style="font-size:12px">焼</span><span>Burned, forever</span><b id="bkburn">${tok(c.burned)}</b><span></span></div>
-        <div class="row"><span class="seal you" style="font-size:12px;background:var(--indigo2)">開</span><span>Creator's buy</span><b>${c.devSol ? fmt(c.devSol, 3) + ' SOL' : 'none'}</b><span></span></div>
-        <div class="row" id="bkfloor"><span class="seal" style="font-size:12px">底</span><span>Floor price</span><b id="bkfl">${px(v.floorUsd, '$')}</b><span></span></div></div>
+        <div class="list"><div class="row"><span class="seal" style="font-size:12px">${I.stone}</span><span>Bought by the pool</span><b>${c.backSol ? fmt(c.backSol, 3) + ' SOL' : '—'}</b><span></span></div>
+        <div class="row"><span class="seal" style="font-size:12px">${I.flame}</span><span>Burned, forever</span><b id="bkburn">${tok(c.burned)}</b><span></span></div>
+        <div class="row"><span class="seal you" style="font-size:12px;background:var(--indigo2)">${I.plus}</span><span>Creator's buy</span><b>${c.devSol ? fmt(c.devSol, 3) + ' SOL' : 'none'}</b><span></span></div>
+        <div class="row" id="bkfloor"><span class="seal" style="font-size:12px">${I.mark}</span><span>Floor price</span><b id="bkfl">${px(v.floorUsd, '$')}</b><span></span></div></div>
         <div class="bkacts">${c.sig ? `<a class="btn sm" href="https://solscan.io/tx/${esc(c.sig)}" target="_blank" rel="noopener">The launch transaction ↗</a>` : ''}<button class="btn sm" type="button" id="bkplay">Replay the backing</button></div>`;
         $('#bkplay').addEventListener('click', replayBacking);
         setTimeout(replayBacking, 350);
@@ -611,7 +614,7 @@
       const Y = p => PT + (Hd - PT - PB) * (1 - (Math.log(p) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)));
       let s = '';
       for (let i = 0; i <= 4; i++) { const p = Math.exp(Math.log(lo) + (Math.log(hi) - Math.log(lo)) * i / 4), y = Y(p); s += `<line x1="${PL}" x2="${Wd - PR}" y1="${y}" y2="${y}" stroke="rgba(28,27,34,.1)"/><text x="${Wd - PR + 6}" y="${y + 4}" font-family="Mono,monospace" font-size="10.5" fill="#686270">${px(p, cur)}</text>`; }
-      if (floor) { const y = Y(floor); s += `<line x1="${PL}" x2="${Wd - PR}" y1="${y}" y2="${y}" stroke="#c8392b" stroke-width="2" stroke-dasharray="7 5"/><rect x="${Wd - PR + 2}" y="${y - 10}" width="${PR - 4}" height="20" fill="#c8392b"/><text x="${Wd - PR + 7}" y="${y + 4}" font-family="Mono,monospace" font-weight="700" font-size="10.5" fill="#f5eedd">底 floor</text>`; }
+      if (floor) { const y = Y(floor); s += `<line x1="${PL}" x2="${Wd - PR}" y1="${y}" y2="${y}" stroke="#c8392b" stroke-width="2" stroke-dasharray="7 5"/><rect x="${Wd - PR + 2}" y="${y - 10}" width="${PR - 4}" height="20" fill="#c8392b"/><text x="${Wd - PR + 7}" y="${y + 4}" font-family="Mono,monospace" font-weight="700" font-size="10.5" fill="#f5eedd">floor</text>`; }
       L.forEach((k, i) => {
         const x = PL + i * cw + cw / 2, up = k.c >= k.o, bw = Math.max(2, cw * 0.62);
         const y1 = Y(Math.max(k.o, k.c)), y2 = Y(Math.min(k.o, k.c));
@@ -624,7 +627,7 @@
       svg.onmousemove = e => {
         const r = svg.getBoundingClientRect(), i = Math.max(0, Math.min(n - 1, Math.floor((e.clientX - r.left - PL) / cw))), k = L[i], tip = $('#ctip');
         tip.style.display = 'block'; tip.style.left = Math.min(r.width - 170, e.clientX - r.left + 12) + 'px'; tip.style.top = '10px';
-        tip.innerHTML = `${new Date(k.t).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · O ${px(k.o, cur)} H ${px(k.h, cur)}<br>L ${px(k.l, cur)} C ${px(k.c, cur)} · ${k.c >= k.o ? '陽 up' : '陰 down'}`;
+        tip.innerHTML = `${new Date(k.t).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} · O ${px(k.o, cur)} H ${px(k.h, cur)}<br>L ${px(k.l, cur)} C ${px(k.c, cur)} · ${k.c >= k.o ? '▲ up' : '▼ down'}`;
       };
       svg.onmouseleave = () => { $('#ctip').style.display = 'none'; };
     }
@@ -649,17 +652,17 @@
     let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => chart(true), 150); });
   }
 
-  // ---------------------------------------------------------------- 底 pool
+  // ---------------------------------------------------------------- pool
   function pool() {
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">底</span>The pool</h1><p>One public wallet pays every backing buy. When it can't cover a launch, launching waits. Nothing launches unbacked.</p></div></div>
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.mark}</span>The pool</h1><p>One public wallet pays every backing buy. When it can't cover a launch, launching waits. Nothing launches unbacked.</p></div></div>
       <div class="lgrid"><div style="display:grid;gap:22px;min-width:0">
-        <div class="panel"><div class="ph"><span><span class="k">底</span>Balance</span><span id="pst">reading</span></div><div class="pb"><div class="pbig" id="pbal"><span id="pbaln">—</span><small>SOL</small></div><div class="paddr" id="paddr"></div>
+        <div class="panel"><div class="ph"><span><span class="k">${I.coin}</span>Balance</span><span id="pst">reading</span></div><div class="pb"><div class="pbig" id="pbal"><span id="pbaln">—</span><small>SOL</small></div><div class="paddr" id="paddr"></div>
           <div class="kv flat"><div><b id="pcap">—</b><small>Launches it can back</small></div><div><b id="ptoday">—</b><small>Backed today</small></div><div><b id="pday">—</b><small>Daily limit</small></div><div><b id="pwal">—</b><small>Per wallet a day</small></div></div></div></div>
-        <div class="panel"><div class="ph"><span><span class="k">石</span>Stones it can still set</span><span id="pslots"></span></div><div class="pb"><div class="slots" id="pstones"></div><p class="slotnote" id="pnote"></p></div></div>
-        <div class="panel"><div class="ph"><span><span class="k">計</span>All time</span></div><div class="pb"><div class="kv flat"><div><b id="pcoins">—</b><small>Coins backed</small></div><div><b id="plocked">—</b><small>SOL under coins</small></div><div><b id="pburn">—</b><small>Tokens burned</small></div><div><b id="pgrad">—</b><small>Graduated</small></div></div></div></div>
+        <div class="panel"><div class="ph"><span><span class="k">${I.stone}</span>Stones it can still set</span><span id="pslots"></span></div><div class="pb"><div class="slots" id="pstones"></div><p class="slotnote" id="pnote"></p></div></div>
+        <div class="panel"><div class="ph"><span><span class="k">${I.sum}</span>All time</span></div><div class="pb"><div class="kv flat"><div><b id="pcoins">—</b><small>Coins backed</small></div><div><b id="plocked">—</b><small>SOL under coins</small></div><div><b id="pburn">—</b><small>Tokens burned</small></div><div><b id="pgrad">—</b><small>Graduated</small></div></div></div></div>
       </div>
-        <div class="panel"><div class="ph"><span><span class="k">帳</span>Backing receipts</span><span id="prc"></span></div><div class="pb list" id="plist"><div class="dash">Loading…</div></div></div></div>
-      <div class="panel" style="margin-top:22px"><div class="ph"><span><span class="k">書</span>How the pool works</span></div><div class="pb doc"><p>Each launch costs the pool three buys of 0.5 SOL, paid inside the launch transaction. The tokens those buys receive are burned in the same transaction and the pool's token account is closed, so the pool never holds a single coin and can never sell. A small reserve stays in the wallet for fees. The pool's key lives only on the server that signs the backing, and it signs only the exact transaction it built for your launch.</p></div></div>`;
+        <div class="panel"><div class="ph"><span><span class="k">${I.list}</span>Backing receipts</span><span id="prc"></span></div><div class="pb list" id="plist"><div class="dash">Loading…</div></div></div></div>
+      <div class="panel" style="margin-top:22px"><div class="ph"><span><span class="k">${I.doc}</span>How the pool works</span></div><div class="pb doc"><p>Each launch costs the pool three buys of 0.5 SOL, paid inside the launch transaction. The tokens those buys receive are burned in the same transaction and the pool's token account is closed, so the pool never holds a single coin and can never sell. A small reserve stays in the wallet for fees. The pool's key lives only on the server that signs the backing, and it signs only the exact transaction it built for your launch.</p></div></div>`;
     const load = async () => {
       const j = await api('/api/data?v=pool');
       if (!j.ok) { $('#pst').textContent = 'offline'; $('#plist').innerHTML = '<div class="dash">The pool could not be read right now.</div>'; return; }
@@ -678,13 +681,13 @@
       $('#pnote').textContent = !p.connected ? 'The pool is not connected yet, so no launch can be backed.' : can < left ? `The balance covers ${can} more launch${can === 1 ? '' : 'es'}; today's limit allows ${left}. Topping up the pool opens the rest.` : `${left} launch${left === 1 ? '' : 'es'} left today, and the balance covers ${can}.`;
       $('#pcoins').textContent = c.coins; $('#plocked').textContent = fmt(c.lockedSol || 0, 2); $('#pburn').textContent = tok(c.burned); $('#pgrad').textContent = c.graduated || 0;
       $('#prc').textContent = j.receipts.length ? j.receipts.length + ' latest' : '';
-      $('#plist').innerHTML = j.receipts.length ? j.receipts.map(r => `<div class="row"><span class="seal" style="font-size:11px">買</span><span><a href="#coin/${esc(r.mint)}">$${esc(r.ticker)}</a> <span class="dash">· ${ago(r.created)}</span></span><b>${r.backSol ? fmt(r.backSol, 3) : '—'} SOL</b><span>${r.sig ? `<a href="https://solscan.io/tx/${esc(r.sig)}" target="_blank" rel="noopener">tx ↗</a>` : ''}</span></div>`).join('')
+      $('#plist').innerHTML = j.receipts.length ? j.receipts.map(r => `<div class="row"><span class="seal" style="font-size:11px">${I.stone}</span><span><a href="#coin/${esc(r.mint)}">$${esc(r.ticker)}</a> <span class="dash">· ${ago(r.created)}</span></span><b>${r.backSol ? fmt(r.backSol, 3) : '—'} SOL</b><span>${r.sig ? `<a href="https://solscan.io/tx/${esc(r.sig)}" target="_blank" rel="noopener">tx ↗</a>` : ''}</span></div>`).join('')
         : '<div class="dash">No backings yet. The first launch will show here.</div>';
     };
     load(); every(load, 10000);
   }
 
-  // ---------------------------------------------------------------- 壁 wall
+  // ---------------------------------------------------------------- wall
   // the castle from the home page's woodblock, cropped to the keep, standing on a foundation of every backed coin
   function sky() {
     const el = $('#gsky'); if (!el) return;
@@ -697,7 +700,7 @@
     const sc = document.createElement('script'); sc.src = '/assets/js/scene.js?v=1'; sc.onload = put; document.head.appendChild(sc);
   }
   function wall() {
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">壁</span>The wall</h1><p>Every coin backed on Azuro is a stone in the castle's foundation, set from the bottom up in launch order. The three newest are gold, graduated coins are blue, and the dashed slots are today's open launches.</p></div><div class="chips"><a class="btn sm red" href="#launch">Set your stone →</a></div></div>
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.wall}</span>The wall</h1><p>Every coin backed on Azuro is a stone in the castle's foundation, set from the bottom up in launch order. The three newest are gold, graduated coins are blue, and the dashed slots are today's open launches.</p></div><div class="chips"><a class="btn sm red" href="#launch">Set your stone →</a></div></div>
       <div class="castle"><div class="sky" id="gsky"></div><div class="gwall"><div class="wall" id="gw"><div class="empty">Loading the wall…</div></div></div></div>
       <div class="wallfoot"><span class="legend"><i class="g"></i>newest<i></i>backed<i class="b"></i>graduated<i class="o"></i>open today</span><span id="gwn"></span></div>`;
     sky();
@@ -719,10 +722,10 @@
     refresh(); every(refresh, 12000);
   }
 
-  // ---------------------------------------------------------------- 帳 ledger
+  // ---------------------------------------------------------------- ledger
   // a holding's floor value is what it sells for on the curve if every other holder sold first: amount x floor price
   function ledger() {
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">帳</span>Your ledger</h1><p>The Azuro coins in your wallet, what they are worth now, and the least they sell for on the curve even if every other holder sells first.</p></div></div><div id="lg"></div>`;
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.list}</span>Your ledger</h1><p>The Azuro coins in your wallet, what they are worth now, and the least they sell for on the curve even if every other holder sells first.</p></div></div><div id="lg"></div>`;
     const load = async () => {
       if (!W.W.addr) { $('#lg').innerHTML = `<div class="panel"><div class="emptybox"><b>Connect a wallet to see your ledger.</b><span>It's read straight from Solana. Nothing is stored.</span><button class="btn red" type="button" id="lgc">Connect</button></div></div>`; $('#lgc').addEventListener('click', openPicker); return; }
       const j = await api('/api/data?v=ledger&wallet=' + W.W.addr);
@@ -731,26 +734,26 @@
         return Object.assign({}, h, { floorSol: !h.grad && floor ? floorBack(price, floor, h.amount) : null }); });
       const tot = held.reduce((s, h) => s + (h.valueSol || 0), 0), flo = held.reduce((s, h) => s + (h.floorSol || 0), 0);
       $('#lg').innerHTML = `<div class="kv" style="margin-bottom:22px"><div><b>${fmt(tot, 3)} SOL</b><small>Worth now · ${j.sol ? usd(tot * j.sol) : '—'}</small></div><div><b>${fmt(flo, 3)} SOL</b><small>At the floor · ${j.sol ? usd(flo * j.sol) : '—'}</small></div><div><b>${held.length}</b><small>Coins held</small></div><div><b>${j.mine.length}</b><small>Coins you launched</small></div></div>
-        <div class="panel"><div class="ph"><span><span class="k">帳</span>Held</span><span>${held.length ? 'now · floor' : ''}</span></div><div class="pb list ledg">${held.length ? held.map(h => `<div class="row"><img src="${esc(h.img)}" alt="" width="32" height="32"><span><a href="#coin/${esc(h.mint)}">$${esc(h.ticker)}</a> <span class="dash">${tok(h.amount)}</span></span><b>${h.valueSol != null ? fmt(h.valueSol, 4) + ' SOL' : '—'}</b><span class="fl">${h.floorSol != null ? fmt(h.floorSol, 4) + ' SOL' : '—'}<small>${h.aboveFloor ? '×' + fmt(h.aboveFloor, 2) + ' above' : ''}</small></span></div>`).join('') : '<div class="dash">No Azuro coins in this wallet yet. <a href="#market">Find one →</a></div>'}</div></div>
-        <div class="panel" style="margin-top:22px"><div class="ph"><span><span class="k">発</span>Launched</span><span>${j.mine.length ? j.mine.length + ' coin' + (j.mine.length === 1 ? '' : 's') : ''}</span></div><div class="pb list ledg">${j.mine.length ? j.mine.map(c => { const v = c.curve || {}; return `<div class="row"><img src="${esc(c.img)}" alt="" width="32" height="32"><span><a href="#coin/${esc(c.mint)}">$${esc(c.ticker)}</a> <span class="dash">${ago(c.created)} · curve ${v.complete ? 'done' : Math.round((v.progress || 0) * 100) + '%'}</span></span><b>${usd(v.mcapUsd)}</b><span class="fl">${v.aboveFloor ? '×' + fmt(v.aboveFloor, 2) : '—'}<small>${c.sig ? `<a href="https://solscan.io/tx/${esc(c.sig)}" target="_blank" rel="noopener">backing ↗</a>` : ''}</small></span></div>`; }).join('') : '<div class="dash">You have not launched a coin yet. <a href="#launch">Launch one →</a></div>'}</div></div>
+        <div class="panel"><div class="ph"><span><span class="k">${I.list}</span>Held</span><span>${held.length ? 'now · floor' : ''}</span></div><div class="pb list ledg">${held.length ? held.map(h => `<div class="row"><img src="${esc(h.img)}" alt="" width="32" height="32"><span><a href="#coin/${esc(h.mint)}">$${esc(h.ticker)}</a> <span class="dash">${tok(h.amount)}</span></span><b>${h.valueSol != null ? fmt(h.valueSol, 4) + ' SOL' : '—'}</b><span class="fl">${h.floorSol != null ? fmt(h.floorSol, 4) + ' SOL' : '—'}<small>${h.aboveFloor ? '×' + fmt(h.aboveFloor, 2) + ' above' : ''}</small></span></div>`).join('') : '<div class="dash">No Azuro coins in this wallet yet. <a href="#market">Find one →</a></div>'}</div></div>
+        <div class="panel" style="margin-top:22px"><div class="ph"><span><span class="k">${I.launch}</span>Launched</span><span>${j.mine.length ? j.mine.length + ' coin' + (j.mine.length === 1 ? '' : 's') : ''}</span></div><div class="pb list ledg">${j.mine.length ? j.mine.map(c => { const v = c.curve || {}; return `<div class="row"><img src="${esc(c.img)}" alt="" width="32" height="32"><span><a href="#coin/${esc(c.mint)}">$${esc(c.ticker)}</a> <span class="dash">${ago(c.created)} · curve ${v.complete ? 'done' : Math.round((v.progress || 0) * 100) + '%'}</span></span><b>${usd(v.mcapUsd)}</b><span class="fl">${v.aboveFloor ? '×' + fmt(v.aboveFloor, 2) : '—'}<small>${c.sig ? `<a href="https://solscan.io/tx/${esc(c.sig)}" target="_blank" rel="noopener">backing ↗</a>` : ''}</small></span></div>`; }).join('') : '<div class="dash">You have not launched a coin yet. <a href="#launch">Launch one →</a></div>'}</div></div>
         <p class="ledgnote">A floor value is what your tokens sell for on the curve if every other holder sold first, after pump.fun's fee, worked out from each coin's live curve. A graduated coin trades in its pool instead, so it shows a dash.</p>`;
     };
     S.onWallet = load; load(); every(load, 15000);
   }
 
-  // ---------------------------------------------------------------- 書 docs
+  // ---------------------------------------------------------------- docs
   function docs() {
     const R = (S.rules && S.rules.rules) || { backSol: 0.5, backBuys: 3, devMaxSol: 0.5, perDay: 40, perWalletPerDay: 2 };
-    view.innerHTML = `<div class="vh"><div><h1><span class="seal">書</span>Docs</h1><p>How a backed launch works, the math behind the floor, the rules, and what Azuro does and doesn't do.</p></div></div>
+    view.innerHTML = `<div class="vh"><div><h1><span class="seal">${I.doc}</span>Docs</h1><p>How a backed launch works, the math behind the floor, the rules, and what Azuro does and doesn't do.</p></div></div>
     <div class="docs"><nav class="toc"><a href="#d-what">What Azuro is</a><a href="#d-tx">The launch transaction</a><a href="#d-floor">The floor</a><a href="#d-rules">The rules</a><a href="#d-costs">Costs</a><a href="#d-trade">Trading</a><a href="#d-pool">The pool</a><a href="#d-risk">Risks</a><a href="#d-api">Public API</a></nav>
     <article class="doc">
-      <h2 id="d-what"><span class="seal">一</span>What Azuro is</h2>
+      <h2 id="d-what"><span class="seal">${I.mark}</span>What Azuro is</h2>
       <p>Azuro is a launchpad for pump.fun coins where every coin is backed before anyone can trade it. The platform buys each new coin ${R.backBuys} times, ${R.backSol} SOL each, inside the transaction that creates it. Every token those buys receive is burned in the same transaction. The SOL they paid stays in the coin's curve forever, which gives the coin a floor from its first block.</p>
-      <h2 id="d-tx"><span class="seal">発</span>The launch transaction</h2>
+      <h2 id="d-tx"><span class="seal">${I.launch}</span>The launch transaction</h2>
       <p>One transaction, in this order:</p>
       <ol><li><code>create_v2</code>: pump.fun creates your coin. You are its creator and receive its creator fees.</li><li>${R.backBuys} × <code>buy</code> by the pool, ${R.backSol} SOL each, for an exact number of tokens.</li><li><code>burn</code>: every token the pool bought, burned.</li><li><code>close_account</code>: the pool's token account is closed and its rent returned.</li><li>Optional: your own <code>buy</code>, up to ${R.devMaxSol} SOL.</li></ol>
       <p>Because the backing sits inside the create transaction, nobody can buy between the launch and the backing. When your own buy doesn't fit in the same transaction, it goes in a second one, sent together with the first as a Jito bundle so it lands right behind the backing. The pool signs last, and only after checking that the transaction is byte for byte the one it built.</p>
-      <h2 id="d-floor"><span class="seal">底</span>The floor</h2>
+      <h2 id="d-floor"><span class="seal">${I.stone}</span>The floor</h2>
       <p>pump.fun's curve is a constant product of virtual reserves: <code>SOL × tokens = k</code>, starting from 30 SOL and 1.073 billion tokens. A buy adds SOL (after fees) and removes tokens; a sell does the reverse. SOL only comes out when tokens go back in.</p>
       <p>The backing adds about ${fmt(R.backSol * R.backBuys / 1.0125, 2)} SOL to the curve after fees and takes out roughly 50 million tokens, which are burned. Those tokens can never be sold back, so even if every holder sold everything they own, the curve would stop at the state the backing left it in. That price is the floor: about 10% above a plain launch price, and it can't be undercut on the curve.</p>
       <pre>floor price = (30 + backing after fees)² / k      k = 30 × 1,073,000,000</pre>
@@ -759,17 +762,17 @@
       <p>The worst case for a holder is that every other holder sells first. The curve then sits at its floor with only your tokens still out, and selling them returns:</p>
       <pre>worst case = floor SOL × your tokens / (floor tokens − your tokens) × (1 − fee)</pre>
       <p>The trade panel shows this number before you buy, and your ledger shows it for everything you hold. Right after a launch it is close to what you put in. The higher a coin trades above its floor, the further it can fall before it gets there.</p>
-      <h2 id="d-rules"><span class="seal">限</span>The rules</h2>
+      <h2 id="d-rules"><span class="seal">${I.rules}</span>The rules</h2>
       <table><tr><th>Rule</th><th>Value</th></tr><tr><td>Backing buys per launch</td><td>${R.backBuys} × ${R.backSol} SOL</td></tr><tr><td>Creator buy cap</td><td>${R.devMaxSol} SOL</td></tr><tr><td>Backed launches a day</td><td>${R.perDay}</td></tr><tr><td>Launches per wallet a day</td><td>${R.perWalletPerDay}</td></tr><tr><td>Tickers</td><td>one ticker, once</td></tr><tr><td>Images</td><td>one image, once (near copies included)</td></tr></table>
-      <h2 id="d-costs"><span class="seal">金</span>Costs</h2>
+      <h2 id="d-costs"><span class="seal">${I.sum}</span>Costs</h2>
       <p>You pay pump.fun's account rent for the new coin, the network fee and your own optional buy: your wallet shows the exact total before you sign. The pool pays the backing. Azuro adds no fee to launches or trades.</p>
-      <h2 id="d-trade"><span class="seal">市</span>Trading</h2>
+      <h2 id="d-trade"><span class="seal">${I.market}</span>Trading</h2>
       <p>Trades are built for your wallet against pump.fun's curve with pump.fun's own SDK. Graduated coins trade in their pump.fun pool. Your wallet signs every trade. You pay pump.fun's normal trading fees and the network fee.</p>
-      <h2 id="d-pool"><span class="seal">底</span>The pool</h2>
+      <h2 id="d-pool"><span class="seal">${I.coin}</span>The pool</h2>
       <p>The pool is one public wallet. Its balance and every backing it paid are on the Pool page and on Solscan. Its key lives only on the server that builds launches, and it signs nothing but the backing of a launch it just built and checked. When the pool can't cover a launch, launching pauses.</p>
-      <h2 id="d-risk"><span class="seal">危</span>Risks</h2>
+      <h2 id="d-risk"><span class="seal">${I.warn}</span>Risks</h2>
       <ul><li>A floor is not a guarantee of profit. If you buy above the floor, you can lose most of what you put in.</li><li>Memecoins are extremely risky and most go to zero relative to where people buy them.</li><li>Azuro is independent and not affiliated with pump.fun. Coins live on pump.fun's program.</li><li>Nothing here is financial advice.</li></ul>
-      <h2 id="d-api"><span class="seal">書</span>Public API</h2>
+      <h2 id="d-api"><span class="seal">${I.doc}</span>Public API</h2>
       <pre>GET /api/data?v=home              pool, counts, latest coins, the wall
 GET /api/data?v=coins             every coin with its live curve
 GET /api/data?v=coin&mint=…       one coin, holders, floor math

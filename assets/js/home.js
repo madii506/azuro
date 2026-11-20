@@ -119,7 +119,8 @@
     const sol = C.sol;
     const lab = v => sol ? usd(v * sol) : fmt(v, 0) + ' SOL';
     let s = '';
-    for (let i = 0; i <= 4; i++) { const v = yMax * i / 4, y = Y(v); s += `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="rgba(28,27,34,.12)"/><text x="${PL - 8}" y="${y + 4}" text-anchor="end" font-family="Mono,monospace" font-size="11" fill="#686270">${lab(v)}</text>`; }
+    const axl = v => !v ? (sol ? '$0' : '0') : sol && yMax * sol >= 1e4 ? '$' + fmt(v * sol / 1e3, 1) + 'K' : lab(v);   // one format down the whole axis
+    for (let i = 0; i <= 4; i++) { const v = yMax * i / 4, y = Y(v); s += `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="rgba(28,27,34,.12)"/><text x="${PL - 8}" y="${y + 4}" text-anchor="end" font-family="Mono,monospace" font-size="11" fill="#686270">${axl(v)}</text>`; }
     for (let x = 0; x <= xMax; x += 10) s += `<text x="${X(x)}" y="${H - PB + 18}" text-anchor="middle" font-family="Mono,monospace" font-size="11" fill="#686270">${x}</text>`;
     s += `<text x="${(PL + W - PR) / 2}" y="${H - 8}" text-anchor="middle" font-family="Mono,monospace" font-size="11" fill="#686270">SOL in the curve</text>`;
     // the locked part under the floor
@@ -130,14 +131,19 @@
     s += `<path d="${d}" fill="none" stroke="#1c1b22" stroke-width="3.5" stroke-linejoin="round"/>`;
     const yf = Y(mcap(M.xF));
     s += `<line x1="${PL}" y1="${yf}" x2="${W - PR}" y2="${yf}" stroke="#c8392b" stroke-width="2.5" stroke-dasharray="8 6"/>`;
-    s += `<g transform="translate(${W - PR - 166},${yf - 34})"><rect width="166" height="26" fill="#c8392b"/><text x="10" y="18" font-family="Mono,monospace" font-weight="700" font-size="12" fill="#f5eedd">底 FLOOR ${lab(mcap(M.xF))}</text></g>`;
+    const ft = 'FLOOR ' + lab(mcap(M.xF)), fw = Math.round(22 + ft.length * 7.3);
+    s += `<g transform="translate(${W - PR - fw},${yf - 34})"><rect width="${fw}" height="26" fill="#c8392b"/><text x="11" y="18" font-family="Mono,monospace" font-weight="700" font-size="12" fill="#f5eedd">${ft}</text></g>`;
     // the coin, pumped to 40 SOL, sold back by the slider
     const top = 40, x = Math.max(M.xF, top - (top - M.xF) * sold / 100);
     const mx = X(x), my = Y(mcap(x));
     s += `<line x1="${mx}" y1="${my}" x2="${mx}" y2="${H - PB}" stroke="rgba(28,27,34,.35)" stroke-dasharray="3 4"/>`;
     s += `<circle cx="${mx}" cy="${my}" r="9" fill="#f5eedd" stroke="#1c1b22" stroke-width="3"/><circle cx="${mx}" cy="${my}" r="3.5" fill="#1c1b22"/>`;
-    const tx = Math.min(mx + 16, W - PR - 250), ty = sold >= 100 ? yf - 54 : Math.max(my - 16, PT + 12);
-    s += `<text x="${tx}" y="${ty}" font-family="Mono,monospace" font-weight="700" font-size="12.5" fill="#1c1b22">${sold >= 100 ? 'everyone sold: it stopped at the floor' : 'market cap ' + lab(mcap(x))}</text>`;
+    // the label goes where the curve isn't: up and left of the marker, else down and right, never across the floor line
+    const tl = sold >= 100 ? 'everyone sold: it stopped at the floor' : 'market cap ' + lab(mcap(x));
+    let tx = mx + 16, ty = my + 18, ta = 'start';
+    if (sold < 100 && mx - 16 - tl.length * 7.6 > PL + 6) { tx = mx - 16; ty = my - 12; ta = 'end'; }
+    else if (ty > yf - 6 && ty < yf + 12) ty = yf + 22;
+    s += `<text x="${tx}" y="${ty}" text-anchor="${ta}" font-family="Mono,monospace" font-weight="700" font-size="12.5" fill="#1c1b22">${tl}</text>`;
     s += `<circle cx="${X(0)}" cy="${Y(mcap(0))}" r="5" fill="#1c1b22"/>`;
     svg.innerHTML = s;
     $('#sellv').textContent = sold + '%';
@@ -174,7 +180,7 @@
     return `<a class="fuda" href="/app#coin/${esc(c.mint)}"><div class="top"><span>$${esc(c.ticker)}</span><span class="age">${ago(c.created)}</span></div>` +
       `<div class="body"><img src="${esc(c.img)}" alt="" loading="lazy" width="64" height="64"><div style="min-width:0"><div class="nm">${esc(c.name)}</div>` +
       `<div class="stats"><span>MCAP<b>${usd(v.mcapUsd)}</b></span><span>ABOVE FLOOR<b>${v.aboveFloor ? '×' + fmt(v.aboveFloor, 2) : '—'}</b></span></div></div></div>` +
-      `<div class="bar" title="bonding curve"><i style="width:${Math.round((v.progress || 0) * 100)}%"></i></div><span class="seal stamp">底</span></a>`;
+      `<div class="bar" title="bonding curve"><i style="width:${Math.round((v.progress || 0) * 100)}%"></i></div><span class="seal stamp"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="5.4"/><rect x="2.6" y="16.4" width="5.6" height="4" rx=".9"/><rect x="9.2" y="16.4" width="5.6" height="4" rx=".9"/><rect x="15.8" y="16.4" width="5.6" height="4" rx=".9"/></svg></span></a>`;
   }
   async function live() {
     let j = null;

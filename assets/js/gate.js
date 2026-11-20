@@ -136,7 +136,7 @@
   const Wt = window.AzWallet;
   function toast(text, bad) {
     const t = document.createElement('div'); t.className = 'toast' + (bad ? ' bad' : '');
-    t.innerHTML = `<span class="seal">${bad ? '否' : '済'}</span><div>${esc(text)}</div>`;
+    t.innerHTML = `<span class="seal">${bad ? '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' : '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg>'}</span><div>${esc(text)}</div>`;
     const box = $('#toasts'); while (box.children.length >= 2) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 6000);
   }
   function connected() {
