@@ -39,6 +39,9 @@
     rows = []; let R = Math.max(9, Math.min(W, 1600) * 0.011), y = horizon, k = 0;
     while (y < H + 4) { rows.push(Object.assign(strip(R, k === 0), { y, k, sp: 7 + k * 2.6, ph: Math.random() * 400 })); y += R * 0.5; R *= 1.11; k++; }
     seaTop = horizon + rows[0].R;
+    // keep the buttons clear of the sun: the gap under the name grows with the sun
+    const nh = $('.name').getBoundingClientRect().height / 2;
+    $('main').style.setProperty('--gap', Math.max(28, Math.round(sunR - nh + 22)) + 'px');
     const nm = $('.name').getBoundingClientRect(), ct = $('.cta').getBoundingClientRect(), ch = phone ? 15 : 21;
     const zones = [[H * 0.05 + ch, nm.top - 26 - ch * 1.9], [ct.bottom + 26 + ch, horizon - 22 - ch * 1.9]];
     mists = [];
@@ -49,9 +52,6 @@
     });
     birds = Array.from({ length: phone ? 2 : 3 }, (_, i) => ({ x: Math.random() * W, y: H * (0.1 + i * 0.07), v: 16 + Math.random() * 14, s: phone ? 10 : 12 + Math.random() * 5, ph: Math.random() * 6 }));
     if (!petals.length) petals = Array.from({ length: phone ? 14 : 24 }, () => petal(true));
-    // keep the buttons clear of the sun: the gap under the name grows with the sun
-    const nh = $('.name').getBoundingClientRect().height / 2;
-    $('main').style.setProperty('--gap', Math.max(28, Math.round(sunR - nh + 22)) + 'px');
   }
   const petal = any => ({ x: any ? Math.random() * W : -30 - Math.random() * W * 0.3, y: any ? Math.random() * H : Math.random() * H * 0.7 - 40, s: 5 + Math.random() * 7,
     vx: 0.45 + Math.random() * 0.8, vy: 0.3 + Math.random() * 0.6, r: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.05, w: Math.random() * 6.28, c: Math.random() < 0.72 ? '#efb6c3' : K.paper });

@@ -10,7 +10,7 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   // ---------- scenes ----------
-  let mode = null, heroScene = null, endScene = null;
+  let mode = null, heroScene = null;
   // with "xMidYMax slice" the art is scaled to cover and pinned to the bottom, so the waterline sits at a fixed
   // distance from the bottom: (viewBox height - sea top) times the scale
   function placeSea(box, sea, sc) {
@@ -21,9 +21,7 @@
   function scenes() {
     const m = innerWidth / innerHeight < 1.05 ? 'tall' : 'wide';
     if (m !== mode) { mode = m; heroScene = AzScene.render(m); $('#heroArt').innerHTML = heroScene.svg; }
-    if (!endScene) { endScene = AzScene.render('strip'); $('#endArt').innerHTML = endScene.svg; }
     placeSea($('#top'), $('#heroSea'), heroScene);
-    placeSea($('#end'), $('#endSea'), endScene);
   }
   scenes();
   let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(scenes, 200); });
