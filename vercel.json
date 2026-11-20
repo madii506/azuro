@@ -1,0 +1,18 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "functions": {
+    "api/launch.js": { "maxDuration": 60 },
+    "api/data.js": { "maxDuration": 30 },
+    "api/trade.js": { "maxDuration": 30 },
+    "api/media.js": { "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/i/:id.png", "destination": "/api/media?i=:id" },
+    { "source": "/m/:id", "destination": "/api/media?m=:id" }
+  ],
+  "headers": [
+    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=600, stale-while-revalidate=86400" }] },
+    { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }, { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }] }
+  ]
+}

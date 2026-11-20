@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZURO terminal</title>
+<meta name="description" content="Launch a pre-backed coin, trade every coin on Azuro, watch the floor under each one and the pool that backs them.">
+<meta name="theme-color" content="#f5eedd">
+<meta property="og:title" content="AZURO terminal">
+<meta property="og:description" content="Every coin launches pre-backed: three 0.5 SOL buys in the launch transaction, every token burned.">
+<meta property="og:image" content="https://azuro.vercel.app/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+<link rel="preload" href="/assets/fonts/mincho-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/azuro.css?v=1">
+<link rel="stylesheet" href="/assets/css/term.css?v=1">
+</head>
+<body class="term">
+<header class="tb">
+  <a class="brand" href="/home" aria-label="Azuro home"><img src="/assets/img/seal.png" alt="" width="34" height="34"><span><b>AZURO</b><small>TERMINAL</small></span></a>
+  <nav class="tabs" id="tabs" aria-label="Terminal views">
+    <a href="#market" data-v="market"><span class="k">市</span><span class="lbl">Market</span></a>
+    <a href="#launch" data-v="launch"><span class="k">発</span><span class="lbl">Launch</span></a>
+    <a href="#pool" data-v="pool"><span class="k">底</span><span class="lbl">Pool</span></a>
+    <a href="#wall" data-v="wall"><span class="k">壁</span><span class="lbl">Wall</span></a>
+    <a href="#ledger" data-v="ledger"><span class="k">帳</span><span class="lbl">Ledger</span></a>
+    <a href="#docs" data-v="docs"><span class="k">書</span><span class="lbl">Docs</span></a>
+  </nav>
+  <div class="right">
+    <button class="search" id="openPal" type="button" aria-label="Search coins and commands"><span>Search coins</span><kbd>/</kbd></button>
+    <button class="btn ink wbtn" id="wbtn" type="button">Connect</button>
+  </div>
+</header>
+<div class="tape" id="tape" aria-hidden="true"><div class="run" id="taperun"><span>Loading the market…</span></div></div>
+
+<main class="view" id="view" tabindex="-1"></main>
+
+<nav class="bottomtabs" id="btabs" aria-label="Terminal views">
+  <a href="#market" data-v="market"><span class="k">市</span>Market</a>
+  <a href="#launch" data-v="launch"><span class="k">発</span>Launch</a>
+  <a href="#pool" data-v="pool"><span class="k">底</span>Pool</a>
+  <a href="#wall" data-v="wall"><span class="k">壁</span>Wall</a>
+  <a href="#ledger" data-v="ledger"><span class="k">帳</span>Ledger</a>
+  <a href="#docs" data-v="docs"><span class="k">書</span>Docs</a>
+</nav>
+
+<div class="modal" id="pal" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="box"><input id="palIn" placeholder="Search a coin, or type a command…" autocomplete="off" spellcheck="false" aria-label="Search"><div class="res" id="palRes"></div></div>
+</div>
+<div class="modal" id="wpick" role="dialog" aria-modal="true" aria-label="Connect a wallet">
+  <div class="box"><h3>Connect a wallet</h3><p class="note">Your wallet signs everything. Azuro never sees your keys.</p><div class="res" id="wlist"></div></div>
+</div>
+<div id="toasts" aria-live="polite"></div>
+<span class="sr" id="live" aria-live="polite"></span>
+
+<script src="/assets/js/config.js?v=1"></script>
+<script src="/assets/js/wallet.js?v=1"></script>
+<script src="/assets/js/term.js?v=1"></script>
+</body>
+</html>

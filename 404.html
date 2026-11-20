@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZURO</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ece1c6">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
+<link rel="stylesheet" href="/assets/css/azuro.css?v=1">
+<style>
+html,body{height:100%}
+body{display:grid;grid-template-rows:1fr auto;min-height:100svh;overflow:hidden}
+.lost{position:relative;z-index:3;display:grid;place-items:center;align-content:center;gap:22px;padding:48px 16px 30px;text-align:center}
+.lost .seal{font-size:clamp(34px,5vw,46px);animation:stamp .55s cubic-bezier(.3,1.7,.5,1) .2s both}
+.lost .eyebrow{justify-content:center}
+.lost h1{font:800 clamp(34px,6vw,72px)/1.02 var(--serif);max-width:15ch}
+.lost p{max-width:48ch;color:var(--ink2);font-size:16.5px}
+.lost .row{display:flex;gap:6px;justify-content:center;margin:6px 0 2px}
+.lost .row .stone{min-width:58px;pointer-events:none}
+.lost .row .stone.ghost{animation:blink 1.6s steps(2) infinite}
+.lost .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.strip{position:relative;height:clamp(200px,34vh,330px)}
+.strip .art{position:absolute;inset:0}.strip .art svg{width:100%;height:100%}
+.strip::after{content:"";position:absolute;inset:0;background:url(/assets/img/washi.jpg) 0 0/640px;mix-blend-mode:multiply;opacity:.4;pointer-events:none;z-index:2}
+.seaband{position:absolute;left:0;right:0;bottom:0;overflow:hidden;border-top:4px solid var(--ink);background:#22355f;z-index:1}
+.seaband i{position:absolute;top:0;bottom:0;left:0;right:-120px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cdefs%3E%3Cg id='s' fill='none' stroke='%23a6b6d3' stroke-width='1.8'%3E%3Cpath d='M0 30A30 30 0 0 1 60 30' fill='%2322355f'/%3E%3Cpath d='M9 30A21 21 0 0 1 51 30'/%3E%3Cpath d='M17.4 30A12.6 12.6 0 0 1 42.6 30'/%3E%3Cpath d='M25.2 30A4.8 4.8 0 0 1 34.8 30'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23s' x='-30' y='-15'/%3E%3Cuse href='%23s' x='30' y='-15'/%3E%3Cuse href='%23s' x='0' y='0'/%3E%3C/svg%3E") 0 0/60px 30px;animation:sea 5s linear infinite}
+@keyframes sea{to{transform:translateX(-60px)}}
+@keyframes stamp{0%{transform:scale(1.9) rotate(-6deg);opacity:0}60%{opacity:1}100%{transform:none}}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.seaband i,.lost .row .stone.ghost,.lost .seal{animation:none}}
+</style>
+</head>
+<body>
+<main class="lost">
+  <span class="seal">無</span>
+  <div class="eyebrow"><b>404</b> — no stone here</div>
+  <h1>This stone was never set.</h1>
+  <div class="row" aria-hidden="true"><span class="stone"></span><span class="stone gold"></span><span class="stone ghost">?</span><span class="stone gold"></span><span class="stone"></span></div>
+  <p>The page you asked for isn't in the wall. Every coin that was backed here has its own page in the terminal.</p>
+  <div class="ctas"><a class="btn red" href="/app">Open the terminal →</a><a class="btn" href="/home">Back home</a></div>
+</main>
+<div class="strip" id="strip"><div class="art" id="art"></div><div class="seaband" id="sea"><i></i></div></div>
+<script src="/assets/js/scene.js?v=1"></script>
+<script>
+(function () {
+  var box = document.getElementById('strip'), sc = window.AzScene && AzScene.render('strip');
+  if (!sc) return;
+  document.getElementById('art').innerHTML = sc.svg;
+  function place() { var r = box.getBoundingClientRect(), k = Math.max(r.width / sc.W, r.height / sc.H); document.getElementById('sea').style.height = Math.round(sc.seaFrac * sc.H * k) + 'px'; }
+  place(); addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

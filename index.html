@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZURO</title>
+<meta name="description" content="Every coin launches pre-backed. Azuro buys every new coin three times, 0.5 SOL each, inside its launch transaction, then burns every token it bought. 1.5 SOL sits under the coin forever.">
+<meta name="theme-color" content="#ece1c6">
+<meta property="og:title" content="AZURO · every coin launches pre-backed">
+<meta property="og:description" content="Three 0.5 SOL buys inside the launch transaction. Every token burned. 1.5 SOL under the coin forever.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://azuro.vercel.app/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://azuro.vercel.app/assets/img/og.jpg">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+<link rel="preload" href="/assets/fonts/mincho-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="prefetch" href="/home">
+<link rel="stylesheet" href="/assets/css/azuro.css?v=1">
+<style>
+/* the front page: the name, two buttons, and a woodblock sunrise that never stops moving */
+html,body{height:100%}
+body{overflow:hidden}
+#sky{position:fixed;inset:0;width:100%;height:100%;display:block;transition:transform 1.1s cubic-bezier(.5,0,.2,1)}
+main{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;padding:0 16px;
+  padding-top:calc(40svh - clamp(28px,7.75vw,95px));pointer-events:none;transition:opacity .5s ease,transform .7s cubic-bezier(.5,0,.3,1)}
+main>*{pointer-events:auto}
+.name{font:800 clamp(56px,15.5vw,190px)/1 var(--serif);letter-spacing:.2em;padding-left:.2em;color:var(--ink);white-space:nowrap;display:flex}
+.name span{display:inline-block;animation:rise 1.1s cubic-bezier(.2,.8,.2,1) both,float 7s ease-in-out infinite;animation-delay:calc(.7s + var(--i) * .1s),calc(2.2s + var(--i) * .35s)}
+@keyframes rise{from{opacity:0;transform:translateY(.4em)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-.035em)}}
+.cta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:var(--gap,clamp(28px,5vh,52px));animation:rise .9s cubic-bezier(.2,.8,.2,1) 1.45s both}
+.cta .btn{min-height:56px;min-width:164px;padding:0 30px;font:800 16px/1 var(--mono);letter-spacing:.24em}
+.cta .btn.red:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.cta .btn.ink:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--red)}
+.veil{position:fixed;inset:0;z-index:5;background:var(--paper) url(/assets/img/washi.jpg) 0 0/640px;opacity:0;pointer-events:none;transition:opacity .45s ease .55s}
+body.go main{opacity:0;transform:translateY(-18px)}
+body.go #sky{transform:scale(1.07)}
+body.go .veil{opacity:1}
+
+/* wallet picker */
+.modal{position:fixed;inset:0;z-index:95;display:none;align-items:flex-start;justify-content:center;padding:16vh 16px 16px;background:rgba(28,27,34,.5)}
+.modal.on{display:flex}
+.modal .box{width:min(440px,100%);background:var(--paper3);border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.modal h3{padding:16px 18px 6px;font:800 20px var(--serif)}
+.modal p.note{padding:0 18px 14px;font-size:14px;color:var(--ink3)}
+.modal .res button{display:flex;width:100%;justify-content:space-between;gap:12px;align-items:center;padding:12px 18px;text-align:left;border:0;border-top:1.5px dashed var(--line2);background:none;font:600 15px var(--serif);min-height:52px;cursor:pointer}
+.modal .res button:hover{background:var(--gold2)}
+.modal .res small{font:600 11px var(--mono);color:var(--ink3);letter-spacing:.08em}
+@media (max-width:520px){.cta{gap:12px;width:100%;max-width:420px;flex-wrap:nowrap}.cta .btn{min-width:0;flex:1 1 0;padding:0 12px;letter-spacing:.16em}}
+@media (prefers-reduced-motion:reduce){.name span,.cta{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<main>
+  <h1 class="name" aria-label="AZURO"><span style="--i:0">A</span><span style="--i:1">Z</span><span style="--i:2">U</span><span style="--i:3">R</span><span style="--i:4">O</span></h1>
+  <div class="cta">
+    <a class="btn red" href="/home" id="enter">ENTER</a>
+    <button class="btn ink" id="connect" type="button">CONNECT</button>
+  </div>
+</main>
+<div class="veil" aria-hidden="true"></div>
+
+<div class="modal" id="wpick" role="dialog" aria-modal="true" aria-label="Connect a wallet">
+  <div class="box"><h3>Connect a wallet</h3><p class="note">Your wallet signs everything. Azuro never sees your keys.</p><div class="res" id="wlist"></div></div>
+</div>
+<div id="toasts" aria-live="polite"></div>
+
+<script src="/assets/js/config.js?v=1"></script>
+<script src="/assets/js/wallet.js?v=1"></script>
+<script src="/assets/js/gate.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AZURO</title>
+<meta name="description" content="Every coin launches pre-backed. Azuro buys every new coin three times, 0.5 SOL each, inside its launch transaction, then burns every token it bought. 1.5 SOL sits under the coin forever.">
+<meta name="theme-color" content="#ece1c6">
+<meta property="og:title" content="AZURO · every coin launches pre-backed">
+<meta property="og:description" content="Three 0.5 SOL buys inside the launch transaction. Every token burned. 1.5 SOL under the coin forever.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://azuro.vercel.app/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://azuro.vercel.app/assets/img/og.jpg">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+<link rel="preload" href="/assets/fonts/mincho-800.woff2" as="font" type="font/woff2" crossorigin>
+<script>try{if(sessionStorage.getItem("azGate")==="1"){document.documentElement.classList.add("from-gate");sessionStorage.removeItem("azGate");sessionStorage.setItem("azSeen","1")}}catch(e){}</script>
+<link rel="stylesheet" href="/assets/css/azuro.css?v=1">
+<style>
+/* ---------- the shoji intro ---------- */
+.shoji{position:fixed;inset:0;z-index:80;display:grid;grid-template-columns:1fr 1fr;pointer-events:none}
+.shoji .door{position:relative;background:#efe5cc url(/assets/img/washi.jpg) 0 0/640px;border:6px solid #5b3a24;transition:transform 1.05s cubic-bezier(.7,0,.25,1);
+  background-image:linear-gradient(#5b3a24 0 0),linear-gradient(#5b3a24 0 0),url(/assets/img/washi.jpg);background-repeat:repeat-x,repeat-y,repeat}
+.shoji .door{background:
+  repeating-linear-gradient(90deg,transparent 0 calc(25% - 3px),#6b4a30 calc(25% - 3px) 25%),
+  repeating-linear-gradient(0deg,transparent 0 calc(16.66% - 3px),#6b4a30 calc(16.66% - 3px) 16.66%),
+  #efe5cc url(/assets/img/washi.jpg) 0 0/640px}
+.shoji .l{border-right-width:3px}.shoji .r{border-left-width:3px}
+.shoji .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:18px;z-index:2;transition:opacity .4s}
+.shoji .mark img{width:clamp(110px,16vw,170px);height:auto;filter:drop-shadow(0 0 0 transparent);animation:stamp .55s cubic-bezier(.3,1.7,.5,1) .35s both}
+.shoji .mark span{font:800 clamp(22px,3vw,34px)/1 var(--serif);letter-spacing:.42em;padding-left:.42em;color:var(--ink);animation:fadeup .6s ease .9s both}
+@keyframes stamp{0%{transform:scale(1.9) rotate(-6deg);opacity:0}60%{opacity:1}100%{transform:none}}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}}
+body.open .shoji .l{transform:translateX(-101%)}
+body.open .shoji .r{transform:translateX(101%)}
+body.open .shoji .mark{opacity:0}
+body.done .shoji{display:none}
+.skip{position:fixed;right:18px;bottom:18px;z-index:81;font:600 12px/1 var(--mono);letter-spacing:.16em;color:var(--ink2);min-height:44px;padding:0 14px;border:1.5px solid var(--line2);background:rgba(245,238,221,.8)}
+body.done .skip,body.open .skip{display:none}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:12px var(--pad);transition:background .3s,border-color .3s;border-bottom:1.5px solid transparent}
+.nav.solid{background:rgba(236,225,198,.94);border-bottom-color:var(--ink);backdrop-filter:blur(2px)}
+.nav .links{display:flex;gap:4px;justify-content:center}
+.nav .links a{font:600 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--ink);padding:14px 12px;border-bottom:2px solid transparent}
+.nav .links a:hover{border-bottom-color:var(--red)}
+.nav .nav-end{justify-self:end}
+.nav .start{justify-self:start;display:flex;align-items:center;gap:10px;text-decoration:none;opacity:0;transition:opacity .3s;pointer-events:none}
+.nav.solid .start{opacity:1;pointer-events:auto}
+.nav .start img{width:30px;height:30px}
+.nav .start span{font:800 16px/1 var(--serif);letter-spacing:.3em}
+.nav .nav-end .btn{min-height:44px;padding:0 14px;font-size:13px;box-shadow:3px 3px 0 var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100svh;min-height:600px;overflow:hidden;border-bottom:2px solid var(--ink)}
+.hero .art{position:absolute;inset:0}
+.hero .art svg{width:100%;height:100%;display:block}
+.seaband{position:absolute;left:0;right:0;bottom:0;overflow:hidden;border-top:4px solid var(--ink);background:#22355f;z-index:1}
+.seaband i{position:absolute;top:0;bottom:0;left:0;right:-120px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cdefs%3E%3Cg id='s' fill='none' stroke='%23a6b6d3' stroke-width='1.8'%3E%3Cpath d='M0 30A30 30 0 0 1 60 30' fill='%2322355f'/%3E%3Cpath d='M9 30A21 21 0 0 1 51 30'/%3E%3Cpath d='M17.4 30A12.6 12.6 0 0 1 42.6 30'/%3E%3Cpath d='M25.2 30A4.8 4.8 0 0 1 34.8 30'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23s' x='-30' y='-15'/%3E%3Cuse href='%23s' x='30' y='-15'/%3E%3Cuse href='%23s' x='0' y='0'/%3E%3C/svg%3E") 0 0/60px 30px;animation:sea 5s linear infinite;will-change:transform}
+@keyframes sea{to{transform:translateX(-60px)}}
+.birds{position:absolute;z-index:1;left:0;top:0;width:90px;height:50px;animation:birds 34s linear infinite;will-change:transform;pointer-events:none}
+@keyframes birds{0%{transform:translate(-120px,11vh)}100%{transform:translate(105vw,5vh)}}
+.hero::after{content:"";position:absolute;inset:0;background:url(/assets/img/washi.jpg) 0 0/640px;mix-blend-mode:multiply;opacity:.4;pointer-events:none;z-index:1}
+.hero .copy{position:absolute;z-index:3;left:var(--pad);top:clamp(96px,15vh,150px);width:min(620px,46vw)}
+.hero .kick{display:flex;align-items:center;gap:14px;font:600 13px/1 var(--mono);letter-spacing:.2em;color:var(--ink2);text-transform:uppercase}
+.hero .kick img{width:46px;height:46px}
+.hero h1{margin-top:22px;font:800 clamp(40px,5.6vw,84px)/1.02 var(--serif);letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--indigo2);position:relative;white-space:nowrap}
+.hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-.06em;height:.12em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 14' preserveAspectRatio='none'%3E%3Cpath d='M3 8C60 3 120 11 180 6S260 4 297 7' fill='none' stroke='%23c8392b' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+.hero p.sub{margin-top:22px;font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--ink2);max-width:540px}
+.hero .ctas{margin-top:30px;display:flex;gap:16px;flex-wrap:wrap}
+.hero .live{position:absolute;z-index:3;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);background:var(--paper3)}
+.hero .live div{padding:12px var(--pad) 12px 18px;border-left:1.5px solid var(--line2)}
+.hero .live div:first-child{border-left:0;padding-left:var(--pad)}
+.hero .live b{display:block;font:700 clamp(17px,1.6vw,22px)/1.1 var(--mono);font-feature-settings:"tnum" 1}
+.hero .live small{display:block;margin-top:4px;font:600 10.5px/1.2 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.lbl05{position:absolute;z-index:4;transform:translate(-50%,-100%);font:700 13px/1 var(--mono);background:var(--paper3);border:2px solid var(--ink);padding:6px 8px;box-shadow:3px 3px 0 var(--ink);opacity:0;pointer-events:none}
+.lbl05.on{animation:pop05 1.8s ease both}
+@keyframes pop05{0%{opacity:0;transform:translate(-50%,-60%)}15%{opacity:1;transform:translate(-50%,-110%)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-130%)}}
+
+/* scene motion */
+.az-birds{display:none}
+body.intro .az-row,body.intro .az-gold,body.intro .az-tier{opacity:0}
+body.intro .az-row{transform:translateY(-60px)}
+body.intro .az-gold{transform:translateY(-140px)}
+body.intro .az-tier{transform:translateY(40px)}
+body.intro .az-sun{transform:translateY(120px);opacity:0}
+body.intro .copy,body.intro .live{opacity:0;transform:translateY(14px)}
+.az-row{transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--r) * 70ms),opacity .25s calc(var(--r) * 70ms)}
+.az-gold{transition:transform .55s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.az-gold[data-n="1"]{transition-delay:.85s}.az-gold[data-n="2"]{transition-delay:1.15s}.az-gold[data-n="3"]{transition-delay:1.45s}
+.az-tier{transition:transform .55s cubic-bezier(.3,1.4,.5,1) calc(1.8s + var(--k) * 140ms),opacity .3s calc(1.8s + var(--k) * 140ms)}
+.az-sun{transition:transform 1.6s cubic-bezier(.2,.8,.2,1) .4s,opacity .8s .4s}
+.copy,.hero .live{transition:transform .8s ease 2.4s,opacity .8s ease 2.4s}
+body.skipped .az-row,body.skipped .az-gold,body.skipped .az-tier,body.skipped .az-sun,body.skipped .copy,body.skipped .hero .live{transition:none!important}
+
+/* ---------- bands ---------- */
+section.band{position:relative;padding:clamp(56px,7vw,96px) var(--pad);border-bottom:2px solid var(--ink)}
+section.band.alt{background:rgba(226,211,177,.5)}
+.band h2{margin-top:18px;font:800 clamp(30px,4.2vw,56px)/1.06 var(--serif);letter-spacing:-.01em;max-width:900px}
+.band p.lead{margin-top:18px;font-size:clamp(16px,1.3vw,19px);line-height:1.65;color:var(--ink2);max-width:68ch}
+.wrap{max-width:1240px;margin:0 auto}
+
+/* 01: nothing under it */
+.versus{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px)}
+.versus figure{border:2px solid var(--ink);background:var(--paper3);box-shadow:6px 6px 0 var(--ink);padding:18px 18px 14px}
+.versus figcaption{display:flex;justify-content:space-between;align-items:center;gap:10px;font:700 13px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.versus figcaption .seal{font-size:15px}
+.versus svg{display:block;width:100%;height:auto;margin-top:12px}
+.versus .ln{fill:none;stroke:var(--ink);stroke-width:4;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.versus .in .ln{transition:stroke-dashoffset 2.6s cubic-bezier(.5,0,.3,1)}
+.versus .in .ln{stroke-dashoffset:0}
+.versus .zero{stroke:var(--ink4);stroke-dasharray:6 6;stroke-width:2}
+.versus .floor{stroke:var(--red);stroke-width:4}
+.versus .note{margin-top:10px;font-size:14px;color:var(--ink3)}
+.versus .tag{font:700 12px var(--mono);fill:var(--ink3)}
+.versus .tagr{font:700 13px var(--mono);fill:var(--red)}
+.ill{margin-top:14px;font:500 11px/1 var(--mono);letter-spacing:.14em;color:var(--ink4);text-transform:uppercase}
+
+/* 02: one transaction */
+.tx{margin-top:46px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,60px);align-items:start}
+.steps{list-style:none;border-top:2px solid var(--ink)}
+.steps li{display:grid;grid-template-columns:62px 1fr auto;gap:16px;align-items:center;padding:16px 4px;border-bottom:1.5px solid var(--line2);transition:background .3s}
+.steps li .seal{font-size:22px;background:var(--ink4);box-shadow:inset 0 0 0 .09em var(--ink4),inset 0 0 0 .14em var(--paper3);transition:background .3s,box-shadow .3s}
+.steps li.on .seal{background:var(--red);box-shadow:inset 0 0 0 .09em var(--red),inset 0 0 0 .14em var(--paper3)}
+.steps li.on{background:rgba(245,238,221,.7)}
+.steps li b{display:block;font-size:18px;font-weight:800}
+.steps li span{display:block;font-size:14.5px;color:var(--ink3);margin-top:2px}
+.steps li i{font:700 13px/1 var(--mono);font-style:normal;color:var(--ink3);white-space:nowrap}
+.steps li.on i{color:var(--ink)}
+.txcard{position:sticky;top:96px;border:2px solid var(--ink);background:var(--paper3);box-shadow:8px 8px 0 var(--ink)}
+.txcard .hd{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--ink);color:var(--paper3);font:700 12.5px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.txcard .base{position:relative;height:210px;border-bottom:2px solid var(--ink);background:linear-gradient(transparent 70%,#22355f 70%)}
+.txcard .base svg{position:absolute;inset:0;width:100%;height:100%}
+.txcard ol{list-style:none;padding:12px 16px 16px;font:500 13px/1.5 var(--mono)}
+.txcard ol li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line2);opacity:.35;transition:opacity .3s}
+.txcard ol li.on{opacity:1}
+.txcard ol li b{font-weight:700}
+.txcard .foot{padding:12px 16px;border-top:2px solid var(--ink);font-size:14px;line-height:1.5}
+.txcard .foot b{color:var(--red)}
+.mini-gold{transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .2s;transform:translateY(-90px);opacity:0}
+.mini-gold.on{transform:none;opacity:1}
+.smoke{opacity:0;transition:opacity .6s}
+.smoke.on{opacity:1;animation:rise 2.4s ease-out infinite}
+@keyframes rise{from{transform:translateY(0)}to{transform:translateY(-26px);opacity:0}}
+
+/* 03: the floor */
+.floorbox{margin-top:44px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,3vw,44px)}
+.chartcard{border:2px solid var(--ink);background:var(--paper3);box-shadow:8px 8px 0 var(--ink);padding:16px}
+.chartcard svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.chartcard .ctl{display:flex;align-items:center;gap:14px;margin-top:12px;font:600 13px/1.2 var(--mono)}
+.chartcard input[type=range]{flex:1;accent-color:var(--red);height:44px}
+.nums{display:grid;gap:0;border-top:2px solid var(--ink)}
+.nums div{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:14px 2px;border-bottom:1.5px solid var(--line2)}
+.nums div span{font-size:15px;color:var(--ink2)}
+.nums div b{font:700 18px/1.1 var(--mono);text-align:right}
+.nums div.red b{color:var(--red)}
+.nums .src{display:block;border:0;font:500 11.5px/1.5 var(--mono);color:var(--ink3);padding-top:12px}
+
+/* 04: carved in stone */
+.tablets{margin-top:46px;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,2vw,24px)}
+.tablet{position:relative;padding:26px 20px 22px;border:2px solid var(--ink);border-radius:30px 30px 6px 6px;background:linear-gradient(#b4bbc2,#949ea9);box-shadow:6px 6px 0 var(--ink);color:var(--ink)}
+.tablet::before{content:"";position:absolute;inset:8px;border:1.5px solid rgba(28,27,34,.35);border-radius:24px 24px 3px 3px;pointer-events:none}
+.tablet .k{display:block;font-size:46px;line-height:1;color:var(--ink);opacity:.85}
+.tablet b{display:block;margin-top:16px;font-size:20px;font-weight:800;line-height:1.2}
+.tablet p{margin-top:10px;font-size:14.5px;line-height:1.55;color:#24262e}
+
+/* 05: the wall */
+.wallbox{margin-top:40px;border:2px solid var(--ink);background:#59606e;padding:14px;box-shadow:8px 8px 0 var(--ink);min-height:120px}
+.wallbox .wall .stone{height:42px}
+.wallnote{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;font:600 12.5px/1.4 var(--mono);color:var(--ink3);letter-spacing:.06em}
+.wallnote i{font-style:normal;display:inline-flex;align-items:center;gap:6px;margin-right:16px}
+.wallnote i::before{content:"";width:14px;height:12px;border:1.5px solid var(--ink);border-radius:2px;background:linear-gradient(#bcc2c8,#8e98a4)}
+.wallnote i.g::before{background:linear-gradient(#f0d27a,#c39437)}
+.wallnote i.b::before{background:linear-gradient(#5f77a8,#2e4377)}
+.empty{display:grid;place-items:center;text-align:center;gap:10px;min-height:92px;color:var(--paper3);font-size:16px}
+.empty small{font:600 12px var(--mono);letter-spacing:.1em;color:#cfd3da}
+.latest{margin-top:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+
+/* 06: the pool */
+.pool{margin-top:40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,44px);align-items:center}
+.pool .big{font:800 clamp(56px,9vw,128px)/.95 var(--mono);letter-spacing:-.03em}
+.pool .big small{font-size:.32em;letter-spacing:.05em;margin-left:10px}
+.pool .addr{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:600 13px var(--mono);color:var(--ink2)}
+.pool .addr a{word-break:break-all}
+.gauge{border:2px solid var(--ink);background:var(--paper3);box-shadow:6px 6px 0 var(--ink);padding:18px}
+.gauge .row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1.5px dashed var(--line2);font-size:15px}
+.gauge .row:last-child{border-bottom:0}
+.gauge .row b{font:700 16px var(--mono)}
+.slots{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 10px}
+.slots i{width:16px;height:22px;border:1.5px solid var(--ink);border-radius:2px;background:linear-gradient(#f0d27a,#c39437)}
+.slots i.used{background:var(--paper2);border-style:dashed;border-color:var(--ink4)}
+
+/* 07: faq */
+.faq{margin-top:40px;border-top:2px solid var(--ink);max-width:980px}
+.faq details{border-bottom:1.5px solid var(--line2)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 2px;cursor:pointer;font-size:clamp(17px,1.5vw,21px);font-weight:800}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:700 22px var(--mono);color:var(--red);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 2px 22px;font-size:16px;line-height:1.65;color:var(--ink2);max-width:72ch}
+
+/* coin + end */
+.coinrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
+.coinrow .ca{font:600 14px var(--mono);padding:12px 14px;border:2px solid var(--ink);background:var(--paper3);word-break:break-all}
+.finale{position:relative;height:clamp(420px,62vh,640px);overflow:hidden;border-bottom:0}
+.finale .art{position:absolute;inset:0}.finale .art svg{width:100%;height:100%}
+.finale::after{content:"";position:absolute;inset:0;background:url(/assets/img/washi.jpg) 0 0/640px;mix-blend-mode:multiply;opacity:.4;pointer-events:none;z-index:1}
+.finale .copy2{position:absolute;z-index:3;left:var(--pad);top:clamp(60px,12vh,110px);max-width:560px}
+.finale h2{font:800 clamp(34px,5vw,68px)/1.04 var(--serif)}
+.finale .ctas{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap}
+.finale .fine{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:600 11.5px/1.4 var(--mono);letter-spacing:.08em;color:var(--paper3)}
+.finale .fine a{color:var(--paper3)}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.reveal.vis{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .tx,.floorbox,.pool{grid-template-columns:1fr}
+  .txcard{position:relative;top:0}
+  .tablets{grid-template-columns:1fr 1fr}
+  .versus{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .nav{grid-template-columns:1fr auto;padding:8px 12px}
+  .nav .links{display:none}
+  .nav .start{opacity:1;pointer-events:auto}
+  .hero .copy{width:auto;right:var(--pad);top:84px}
+  .hero h1{font-size:clamp(32px,9vw,44px);margin-top:14px}
+  .hero p.sub{font-size:14.5px;margin-top:12px;line-height:1.5}
+  .hero .ctas{margin-top:18px;gap:12px}
+  .hero .kick{font-size:11px}
+  .hero .kick img{width:36px;height:36px}
+  .hero .live{grid-template-columns:1fr 1fr}
+  .hero .live div{padding:10px 14px;border-top:1.5px solid var(--line2)}
+  .hero .live div:nth-child(odd){border-left:0}
+  .hero .live div:first-child{padding-left:14px}
+  .tablets{grid-template-columns:1fr}
+  .steps li{grid-template-columns:48px 1fr;}
+  .steps li i{grid-column:2}
+  .finale .copy2{right:var(--pad)}
+}
+@media (max-width:760px){.nav .start{min-height:44px}.wallbox .wall .stone{height:44px}#poolAddr a{display:inline-block;padding:14px 0}}
+.from-gate .shoji,.from-gate .skip{display:none!important}
+.from-gate .hero .art,.from-gate .hero .seaband{animation:arrive 1.5s cubic-bezier(.15,.7,.2,1) both;will-change:transform}
+.from-gate .hero .copy>*{animation:fadeup .8s cubic-bezier(.2,.8,.2,1) both}
+.from-gate .hero .copy>:nth-child(2){animation-delay:.12s}.from-gate .hero .copy>:nth-child(3){animation-delay:.24s}.from-gate .hero .copy>:nth-child(4){animation-delay:.36s}
+.from-gate .hero .live{animation:fadeup .8s ease .5s both}
+@keyframes arrive{from{transform:scale(1.07)}}
+@media (prefers-reduced-motion:reduce){.from-gate .hero .art,.from-gate .hero .seaband,.from-gate .hero .copy>*,.from-gate .hero .live{animation:none}}
+.wallbox.vis .wall .stone{animation:setin .55s cubic-bezier(.2,1.5,.4,1) both;animation-delay:calc(var(--i,0) * 40ms + .1s)}
+@media (prefers-reduced-motion:reduce){.wallbox.vis .wall .stone{animation:none}}
+</style>
+</head>
+<body class="intro">
+<a class="sr" href="#main">Skip to content</a>
+
+<div class="shoji" aria-hidden="true"><div class="door l"></div><div class="door r"></div>
+  <div class="mark"><img src="/assets/img/seal.png" alt="" width="170" height="170"><span>AZURO</span></div></div>
+<button class="skip" type="button" id="skip">SKIP ›</button>
+
+<nav class="nav" id="nav" aria-label="Sections">
+  <a class="start" href="#top" aria-label="Back to the top"><img src="/assets/img/seal.png" alt=""><span>AZURO</span></a>
+  <div class="links"><a href="#how">How it works</a><a href="#floor">The floor</a><a href="#wall">The wall</a><a href="#pool">The pool</a><a href="#faq">FAQ</a></div>
+  <div class="nav-end"><a class="btn ink" href="/app">Terminal →</a></div>
+</nav>
+
+<main id="main">
+<header class="hero" id="top">
+  <div class="art" id="heroArt"></div>
+  <div class="seaband" id="heroSea"><i></i></div>
+  <svg class="birds" viewBox="0 0 90 50" aria-hidden="true"><g fill="none" stroke="#1c1b22" stroke-width="2.6" stroke-linecap="round"><path d="M10 20 Q19 13 25 25 Q31 13 40 20"/><path d="M48 34 Q55 29 60 38 Q65 29 72 34"/><path d="M4 40 Q9 36 13 43 Q17 36 22 40"/></g></svg>
+  <div class="copy">
+    <div class="kick"><img src="/assets/img/seal.png" alt="" width="46" height="46">AZURO · 底 the floor</div>
+    <h1>Every coin launches <em>pre-backed.</em></h1>
+    <p class="sub">Most coins launch with nothing under them. On Azuro the platform backs every coin before anyone can trade: three buys of 0.5 SOL inside the launch transaction, every token it bought burned, and that 1.5 SOL stays under the coin forever.</p>
+    <div class="ctas"><a class="btn red" href="/app#launch">Launch a coin →</a><a class="btn" href="/app">Open the terminal</a></div>
+  </div>
+  <div class="live" id="live" aria-live="polite">
+    <div><b data-k="pool">—</b><small>SOL in the pool</small></div>
+    <div><b data-k="cap">—</b><small>Launches it can back</small></div>
+    <div><b data-k="coins">—</b><small>Coins set on stone</small></div>
+    <div><b data-k="locked">—</b><small>SOL under coins</small></div>
+  </div>
+</header>
+
+<section class="band" id="nothing">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>01</b> — Nothing under it</div>
+    <h2 class="reveal">Most coins launch with nothing under them.</h2>
+    <p class="lead reveal">One dev, one snipe, one dump. A fresh coin on pump.fun starts on an empty curve: whoever sells first takes everything that was put in, and the price can fall all the way back to where it began.</p>
+    <div class="versus">
+      <figure class="reveal" id="vsA">
+        <figcaption><span>A coin with nothing under it</span><span class="seal" style="background:var(--ink)">無</span></figcaption>
+        <svg viewBox="0 0 560 260" role="img" aria-label="Illustration: a price pumps, then falls all the way back to its starting point">
+          <line class="zero" x1="20" y1="230" x2="540" y2="230"/>
+          <text class="tag" x="536" y="250" text-anchor="end">where it started</text>
+          <path class="ln" pathLength="1" d="M20 228 L70 226 L96 150 L120 168 L150 70 L176 96 L196 44 L214 120 L236 176 L262 214 L300 222 L360 226 L440 228 L540 229"/>
+        </svg>
+        <p class="note">The dump has no floor. Every SOL that went in can leave.</p>
+      </figure>
+      <figure class="reveal" id="vsB">
+        <figcaption><span>A coin set on Azuro</span><span class="seal">底</span></figcaption>
+        <svg viewBox="0 0 560 260" role="img" aria-label="Illustration: the same pump, but the fall stops at a floor set by 1.5 SOL of burned backing">
+          <line class="zero" x1="20" y1="230" x2="540" y2="230"/>
+          <line class="floor" x1="20" y1="196" x2="540" y2="196"/>
+          <text class="tagr" x="536" y="216" text-anchor="end">底 the floor: 1.5 SOL nobody can take out</text>
+          <path class="ln" pathLength="1" d="M20 196 L70 194 L96 120 L120 138 L150 50 L176 76 L196 30 L214 100 L236 150 L262 186 L300 194 L360 196 L440 196 L540 196"/>
+        </svg>
+        <p class="note">The backing was bought and burned, so no one can ever sell it back. The fall stops at the floor.</p>
+      </figure>
+    </div>
+    <div class="ill">Illustrations, not price history</div>
+  </div>
+</section>
+
+<section class="band alt" id="how">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>02</b> — One transaction</div>
+    <h2 class="reveal">The platform backs every coin before anyone can trade.</h2>
+    <p class="lead reveal">It all happens inside the transaction that creates your coin. There is no gap between the launch and the backing, so there is nothing to snipe.</p>
+    <div class="tx">
+      <ol class="steps" id="steps">
+        <li data-s="1"><span class="seal">発</span><div><b>You launch a coin</b><span>One ticker, one image, one signature in your own wallet.</span></div><i>create</i></li>
+        <li data-s="2"><span class="seal">一</span><div><b>The platform buys it</b><span>First backing buy, inside the launch transaction.</span></div><i>0.5 SOL</i></li>
+        <li data-s="3"><span class="seal">二</span><div><b>And buys it again</b><span>Second backing buy, same transaction.</span></div><i>0.5 SOL</i></li>
+        <li data-s="4"><span class="seal">三</span><div><b>And a third time</b><span>Third backing buy, same transaction.</span></div><i>0.5 SOL</i></li>
+        <li data-s="5"><span class="seal">焼</span><div><b>Every token it bought is burned</b><span>The platform keeps nothing, so it can never sell.</span></div><i>burn</i></li>
+        <li data-s="6"><span class="seal">底</span><div><b>That 1.5 SOL stays in the curve forever</b><span>Then trading opens, on a coin that already has a floor.</span></div><i>floor</i></li>
+      </ol>
+      <div class="txcard" aria-live="polite">
+        <div class="hd"><span>One launch transaction</span><span id="txst">building</span></div>
+        <div class="base">
+          <svg viewBox="0 0 400 210" aria-hidden="true">
+            <rect x="0" y="146" width="400" height="64" fill="#22355f"/>
+            <line x1="0" y1="146" x2="400" y2="146" stroke="#1c1b22" stroke-width="3"/>
+            <path d="M88 150 L112 60 L288 60 L312 150 Z" fill="#59606e" stroke="#1c1b22" stroke-width="3"/>
+            <g fill="url(#azStoneMini)" stroke="#1c1b22" stroke-width="2.4">
+              <rect x="114" y="64" width="54" height="22" rx="2"/><rect x="172" y="64" width="62" height="22" rx="2"/><rect x="238" y="64" width="48" height="22" rx="2"/>
+              <rect x="106" y="90" width="70" height="24" rx="2"/><rect x="180" y="90" width="44" height="24" rx="2"/><rect x="228" y="90" width="66" height="24" rx="2"/>
+            </g>
+            <defs><linearGradient id="azStoneMini" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9bfc5"/><stop offset="1" stop-color="#8b95a1"/></linearGradient>
+              <linearGradient id="azGoldMini" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0d27a"/><stop offset=".6" stop-color="#d1a544"/><stop offset="1" stop-color="#a97b26"/></linearGradient></defs>
+            <g class="mini-gold" data-g="2"><rect x="100" y="118" width="64" height="26" rx="2" fill="url(#azGoldMini)" stroke="#1c1b22" stroke-width="2.6"/><text x="132" y="136" text-anchor="middle" font-family="Mono,monospace" font-weight="700" font-size="12" fill="#1c1b22">0.5</text></g>
+            <g class="mini-gold" data-g="3"><rect x="168" y="118" width="64" height="26" rx="2" fill="url(#azGoldMini)" stroke="#1c1b22" stroke-width="2.6"/><text x="200" y="136" text-anchor="middle" font-family="Mono,monospace" font-weight="700" font-size="12" fill="#1c1b22">0.5</text></g>
+            <g class="mini-gold" data-g="4"><rect x="236" y="118" width="64" height="26" rx="2" fill="url(#azGoldMini)" stroke="#1c1b22" stroke-width="2.6"/><text x="268" y="136" text-anchor="middle" font-family="Mono,monospace" font-weight="700" font-size="12" fill="#1c1b22">0.5</text></g>
+            <g class="smoke" id="smoke"><path d="M200 50 q-10 -12 0 -24 q10 -12 0 -24" fill="none" stroke="#6c6676" stroke-width="3" stroke-linecap="round"/><path d="M222 54 q-8 -10 0 -20 q8 -10 0 -20" fill="none" stroke="#6c6676" stroke-width="2.4" stroke-linecap="round"/><path d="M178 54 q-8 -10 0 -20 q8 -10 0 -20" fill="none" stroke="#6c6676" stroke-width="2.4" stroke-linecap="round"/></g>
+          </svg>
+        </div>
+        <ol id="txlist">
+          <li data-s="1"><span>create_v2</span><b>your coin</b></li>
+          <li data-s="2"><span>buy · pool</span><b>0.5 SOL</b></li>
+          <li data-s="3"><span>buy · pool</span><b>0.5 SOL</b></li>
+          <li data-s="4"><span>buy · pool</span><b>0.5 SOL</b></li>
+          <li data-s="5"><span>burn · close</span><b id="burnN">every token</b></li>
+          <li data-s="6"><span>buy · you</span><b>≤ 0.5 SOL</b></li>
+        </ol>
+        <div class="foot">No snipes before the backing: <b>nobody can buy between your create and the backing</b>, because they are the same transaction. Your own buy is capped at 0.5 SOL and lands right behind it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="floor">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>03</b> — The floor</div>
+    <h2 class="reveal">Sell everything. It still stops here.</h2>
+    <p class="lead reveal">A bonding curve gives back SOL only for tokens sold into it. The 1.5 SOL of backing bought tokens that were burned, so they can never be sold: even if every holder sold every token, that SOL stays in the curve. Drag the slider and sell the whole coin back.</p>
+    <div class="floorbox">
+      <div class="chartcard reveal">
+        <svg id="curve" viewBox="0 0 640 360" role="img" aria-label="The pump.fun bonding curve with the floor the backing sets"></svg>
+        <div class="ctl"><label for="sell">Sold back</label><input id="sell" type="range" min="0" max="100" value="0" aria-label="Share of all tokens sold back into the curve"><b id="sellv" class="mono">0%</b></div>
+      </div>
+      <div class="nums reveal" id="nums">
+        <div><span>Launch price</span><b data-n="p0">—</b></div>
+        <div class="red"><span>Floor price, after the backing</span><b data-n="pf">—</b></div>
+        <div><span>Floor above the launch price</span><b data-n="up">—</b></div>
+        <div><span>Market cap at the floor</span><b data-n="mf">—</b></div>
+        <div><span>Tokens burned by the backing</span><b data-n="burn">—</b></div>
+        <div><span>Price on the slider</span><b data-n="now">—</b></div>
+        <span class="src" id="src">Computed from pump.fun's curve: 30 SOL and 1.073B tokens of virtual reserves, fees included.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="rules">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>04</b> — Carved in stone</div>
+    <h2 class="reveal">Four rules no launch can skip.</h2>
+    <div class="tablets">
+      <div class="tablet reveal"><span class="k">先</span><b>No snipes before the backing</b><p>The backing is inside the launch transaction. Nobody can buy in between.</p></div>
+      <div class="tablet reveal"><span class="k">限</span><b>Dev buy capped at 0.5 SOL</b><p>The creator's launch buy can't be bigger than one backing buy, and it lands behind the backing.</p></div>
+      <div class="tablet reveal"><span class="k">一</span><b>One ticker, one image, once</b><p>A ticker or an image already on Azuro can't launch again. No copies.</p></div>
+      <div class="tablet reveal"><span class="k">焼</span><b>Every backed token burned</b><p>The platform holds nothing. You can check the burn on Solscan for every coin.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="wall">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>05</b> — The wall</div>
+    <h2 class="reveal">Every launch is a stone in the wall.</h2>
+    <p class="lead reveal">Each coin backed here adds a stone. Gold stones are the newest, blue stones have graduated to their pool. Tap any stone to open its coin.</p>
+    <div class="wallbox reveal"><div class="wall" id="wallStones"><div class="empty">Loading the wall…</div></div></div>
+    <div class="wallnote"><span><i class="g">newest</i><i>backed</i><i class="b">graduated</i></span><span id="wallCount"></span></div>
+    <div class="latest" id="latest"></div>
+  </div>
+</section>
+
+<section class="band alt" id="pool">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>06</b> — The pool</div>
+    <h2 class="reveal">The backing comes from one public wallet.</h2>
+    <p class="lead reveal">Every backing buy is paid from the pool. Its balance is live below. When it can't cover a launch, launching waits until it is refilled. Nothing launches unbacked.</p>
+    <div class="pool">
+      <div class="reveal"><div class="big" id="poolBig">—<small>SOL</small></div><div class="addr" id="poolAddr">The pool address appears here once it is connected.</div></div>
+      <div class="gauge reveal" id="gauge">
+        <div class="row"><span>Launches it can back right now</span><b data-g="cap">—</b></div>
+        <div class="slots" id="slots"></div>
+        <div class="row"><span>Backed in the last 24 hours</span><b data-g="today">—</b></div>
+        <div class="row"><span>Daily limit</span><b data-g="perDay">—</b></div>
+        <div class="row"><span>Per wallet, per day</span><b data-g="perWallet">—</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="eyebrow reveal"><b>07</b> — Questions</div>
+    <h2 class="reveal">Asked and answered.</h2>
+    <div class="faq">
+      <details><summary>What exactly happens when I launch?</summary><p>You sign one transaction in your own wallet. In order, it creates your coin on pump.fun, buys it three times with 0.5 SOL each from the platform's pool, burns every token those buys received, closes the pool's token account, and then (if you chose one) makes your own buy of up to 0.5 SOL. When your buy doesn't fit in the same transaction, it rides in a second one, sent together with the first as a Jito bundle so it lands right behind the backing.</p></details>
+      <details><summary>Why can't the 1.5 SOL ever leave?</summary><p>On a bonding curve, SOL comes out only when tokens are sold back in. The backing bought tokens and burned them, so those tokens no longer exist and can never be sold. Everyone else can sell what they bought, but the SOL the burned tokens paid for stays in the curve, and moves with it into the pool when the coin graduates.</p></details>
+      <details><summary>Does a floor mean I can't lose money?</summary><p>No. The floor is the price the curve can't fall below, and it sits a little above the launch price. If you buy higher than the floor, you can still lose most of what you put in. Memecoins are extremely risky. Nothing here is financial advice.</p></details>
+      <details><summary>Who pays for the backing?</summary><p>The platform's pool, a public wallet you can watch above. You pay pump.fun's normal creation cost, network fees and your own optional buy. Azuro adds no fee to your launch.</p></details>
+      <details><summary>Can I buy my own coin at launch?</summary><p>Yes, up to 0.5 SOL, and always after the backing. You can't buy before it: the backing is first in the launch transaction.</p></details>
+      <details><summary>Why one ticker and one image?</summary><p>So nobody can copy a coin that is doing well. A ticker or an image already used on Azuro is refused, including images that are only slightly changed.</p></details>
+      <details><summary>What if the pool runs dry?</summary><p>Then launching pauses. The site shows how many launches the pool can still back, and the terminal won't let anyone launch a coin it can't back.</p></details>
+      <details><summary>Is Azuro part of pump.fun?</summary><p>No. Azuro is independent. Every coin is created and traded on pump.fun's own program, and graduates to pump.fun's pool like any other coin.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="coin" hidden>
+  <div class="wrap">
+    <div class="eyebrow"><b>08</b> — $AZURO</div>
+    <h2>The pad's own coin.</h2>
+    <div class="coinrow"><span class="ca" id="caText"></span><button class="btn sm" id="caCopy" type="button">Copy</button><a class="btn sm" id="caBuy" target="_blank" rel="noopener">Buy on pump.fun</a><a class="btn sm" id="caChart" target="_blank" rel="noopener">Chart</a><a class="btn sm" id="caX" target="_blank" rel="noopener">X</a></div>
+  </div>
+</section>
+
+<section class="finale" id="end">
+  <div class="art" id="endArt"></div>
+  <div class="seaband" id="endSea"><i></i></div>
+  <div class="copy2"><h2>Launch on stone, not on sand.</h2><div class="ctas"><a class="btn red" href="/app#launch">Launch a coin →</a><a class="btn" href="/app">Open the terminal</a></div></div>
+  <div class="fine"><span>Every coin launches on pump.fun. Azuro is not affiliated with pump.fun.</span><span><a href="/app#docs">Docs</a></span></div>
+</section>
+</main>
+
+<div id="toasts" aria-live="polite"></div>
+<script src="/assets/js/config.js?v=1"></script>
+<script src="/assets/js/scene.js?v=1"></script>
+<script src="/assets/js/home.js?v=1"></script>
+</body>
+</html>
