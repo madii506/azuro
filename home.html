@@ -66,11 +66,10 @@ body.done .skip,body.open .skip{display:none}
 .hero .copy{position:absolute;z-index:3;left:var(--pad);top:clamp(96px,15vh,150px);width:min(620px,46vw)}
 .hero .kick{display:flex;align-items:center;gap:14px;font:600 13px/1 var(--mono);letter-spacing:.2em;color:var(--ink2);text-transform:uppercase}
 .hero .kick img{width:46px;height:46px}
-.hero h1{margin-top:22px;font:800 clamp(40px,5.6vw,84px)/1.02 var(--serif);letter-spacing:-.01em}
+.hero h1{margin-top:24px;font:800 clamp(44px,6.4vw,98px)/1.0 var(--serif);letter-spacing:-.015em}
 .hero h1 em{font-style:normal;color:var(--indigo2);position:relative;white-space:nowrap}
 .hero h1 em::after{content:"";position:absolute;left:0;right:0;bottom:-.06em;height:.12em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 14' preserveAspectRatio='none'%3E%3Cpath d='M3 8C60 3 120 11 180 6S260 4 297 7' fill='none' stroke='%23c8392b' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
-.hero p.sub{margin-top:22px;font-size:clamp(16px,1.35vw,19px);line-height:1.6;color:var(--ink2);max-width:540px}
-.hero .ctas{margin-top:30px;display:flex;gap:16px;flex-wrap:wrap}
+.hero .ctas{margin-top:clamp(28px,4vh,40px);display:flex;gap:16px;flex-wrap:wrap}
 .hero .live{position:absolute;z-index:3;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);background:var(--paper3)}
 .hero .live div{padding:12px var(--pad) 12px 18px;border-left:1.5px solid var(--line2)}
 .hero .live div:first-child{border-left:0;padding-left:var(--pad)}
@@ -205,15 +204,45 @@ section.band.alt{background:rgba(226,211,177,.5)}
 /* coin + end */
 .coinrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
 .coinrow .ca{font:600 14px var(--mono);padding:12px 14px;border:2px solid var(--ink);background:var(--paper3);word-break:break-all}
-.finale{position:relative;height:clamp(420px,62vh,640px);overflow:hidden;border-bottom:0}
-.finale .art{position:absolute;inset:0}.finale .art svg{width:100%;height:100%}
-.finale::after{content:"";position:absolute;inset:0;background:url(/assets/img/washi.jpg) 0 0/640px;mix-blend-mode:multiply;opacity:.4;pointer-events:none;z-index:1}
-.finale .copy2{position:absolute;z-index:3;left:var(--pad);top:clamp(60px,12vh,110px);max-width:560px}
-.finale h2{font:800 clamp(34px,5vw,68px)/1.04 var(--serif)}
-.finale .ctas{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap}
-.finale .fine{position:absolute;z-index:3;left:var(--pad);right:var(--pad);bottom:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:600 11.5px/1.4 var(--mono);letter-spacing:.08em;color:var(--paper3)}
-.finale .fine a{color:var(--paper3)}
 
+/* ---------- section heads ---------- */
+.head{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(28px,5vw,80px);align-items:end}
+.head .t{min-width:0}
+.band .head h2{max-width:16ch}
+.band .head p.lead{position:relative;margin-top:0;max-width:46ch;padding:4px 0 6px clamp(16px,1.6vw,24px);font-size:clamp(16px,1.25vw,18.5px)}
+.band .head p.lead::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transform-origin:50% 0;transition:transform .9s cubic-bezier(.2,.8,.2,1) .25s}
+.band .head p.lead.vis::before{transform:none}
+@media (prefers-reduced-motion:reduce){.band .head p.lead::before{transform:none;transition:none}}
+.band .eyebrow b{display:inline-grid;place-items:center;min-width:34px;height:26px;padding:0 6px;border:1.5px solid var(--ink);color:var(--ink);letter-spacing:.06em;background:var(--paper3)}
+.band.alt .eyebrow b{background:var(--paper)}
+/* staggered entrances */
+.versus figure:nth-child(2){transition-delay:.14s}
+.tablets .tablet:nth-child(2){transition-delay:.1s}.tablets .tablet:nth-child(3){transition-delay:.2s}.tablets .tablet:nth-child(4){transition-delay:.3s}
+.pool>.reveal:nth-child(2){transition-delay:.14s}
+/* 04: the tablets, taller and set in stone */
+.tablet{display:flex;flex-direction:column;min-height:300px;padding:30px 24px 26px;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,opacity .8s ease}
+.tablet .k{font-size:clamp(52px,4.6vw,68px)}
+.tablet .no{position:absolute;right:20px;top:22px;font:700 11px/1 var(--mono);letter-spacing:.16em;color:rgba(28,27,34,.6)}
+.tablet b{margin-top:auto;padding-top:22px;font-size:clamp(19px,1.5vw,22px)}
+.tablet.vis:hover{transform:translateY(-4px);box-shadow:8px 10px 0 var(--ink)}
+/* 07: questions beside their heading */
+.faqgrid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,5vw,88px);align-items:start}
+.faqgrid .t{position:sticky;top:110px}
+.faqgrid .t p.lead{max-width:40ch}
+.faqgrid .t .btn{margin-top:26px}
+.faqgrid .faq{margin-top:0;max-width:none}
+.faq summary{transition:color .2s}
+.faq summary:hover{color:var(--red)}
+.faq details[open] summary{color:var(--ink)}
+.faq details[open] p{animation:fadeup .35s ease both}
+@media (max-width:980px){
+  .head{grid-template-columns:1fr;gap:0}
+  .band .head p.lead{margin-top:20px}
+  .faqgrid{grid-template-columns:1fr;gap:34px}
+  .faqgrid .t{position:static}
+  .tablet{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){.tablet,.tablet:hover{transform:none;transition:none}}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
 .reveal.vis{opacity:1;transform:none}
 
@@ -228,8 +257,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
   .nav .links{display:none}
   .nav .start{opacity:1;pointer-events:auto}
   .hero .copy{width:auto;right:var(--pad);top:84px}
-  .hero h1{font-size:clamp(32px,9vw,44px);margin-top:14px}
-  .hero p.sub{font-size:14.5px;margin-top:12px;line-height:1.5}
+  .hero h1{font-size:clamp(38px,11vw,52px);margin-top:16px}
   .hero .ctas{margin-top:18px;gap:12px}
   .hero .kick{font-size:11px}
   .hero .kick img{width:36px;height:36px}
@@ -240,8 +268,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
   .tablets{grid-template-columns:1fr}
   .steps li{grid-template-columns:48px 1fr;}
   .steps li i{grid-column:2}
-  .finale .copy2{right:var(--pad)}
-}
+  }
 @media (max-width:760px){.nav .start{min-height:44px}.wallbox .wall .stone{height:44px}#poolAddr a{display:inline-block;padding:14px 0}}
 .from-gate .shoji,.from-gate .skip{display:none!important}
 .from-gate .hero .art,.from-gate .hero .seaband{animation:arrive 1.5s cubic-bezier(.15,.7,.2,1) both;will-change:transform}
@@ -275,7 +302,6 @@ section.band.alt{background:rgba(226,211,177,.5)}
   <div class="copy">
     <div class="kick"><img src="/assets/img/seal.png" alt="" width="46" height="46">AZURO · 底 the floor</div>
     <h1>Every coin launches <em>pre-backed.</em></h1>
-    <p class="sub">Most coins launch with nothing under them. On Azuro the platform backs every coin before anyone can trade: three buys of 0.5 SOL inside the launch transaction, every token it bought burned, and that 1.5 SOL stays under the coin forever.</p>
     <div class="ctas"><a class="btn red" href="/app#launch">Launch a coin →</a><a class="btn" href="/app">Open the terminal</a></div>
   </div>
   <div class="live" id="live" aria-live="polite">
@@ -288,9 +314,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band" id="nothing">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>01</b> — Nothing under it</div>
-    <h2 class="reveal">Most coins launch with nothing under them.</h2>
-    <p class="lead reveal">One dev, one snipe, one dump. A fresh coin on pump.fun starts on an empty curve: whoever sells first takes everything that was put in, and the price can fall all the way back to where it began.</p>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>01</b> — Nothing under it</div><h2 class="reveal">Most coins launch with nothing under them.</h2></div><p class="lead reveal">One dev, one snipe, one dump. A fresh coin on pump.fun starts on an empty curve: whoever sells first takes everything that was put in, and the price can fall all the way back to where it began.</p></div>
     <div class="versus">
       <figure class="reveal" id="vsA">
         <figcaption><span>A coin with nothing under it</span><span class="seal" style="background:var(--ink)">無</span></figcaption>
@@ -318,9 +342,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band alt" id="how">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>02</b> — One transaction</div>
-    <h2 class="reveal">The platform backs every coin before anyone can trade.</h2>
-    <p class="lead reveal">It all happens inside the transaction that creates your coin. There is no gap between the launch and the backing, so there is nothing to snipe.</p>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>02</b> — One transaction</div><h2 class="reveal">The platform backs every coin before anyone can trade.</h2></div><p class="lead reveal">It all happens inside the transaction that creates your coin. There is no gap between the launch and the backing, so there is nothing to snipe.</p></div>
     <div class="tx">
       <ol class="steps" id="steps">
         <li data-s="1"><span class="seal">発</span><div><b>You launch a coin</b><span>One ticker, one image, one signature in your own wallet.</span></div><i>create</i></li>
@@ -365,9 +387,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band" id="floor">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>03</b> — The floor</div>
-    <h2 class="reveal">Sell everything. It still stops here.</h2>
-    <p class="lead reveal">A bonding curve gives back SOL only for tokens sold into it. The 1.5 SOL of backing bought tokens that were burned, so they can never be sold: even if every holder sold every token, that SOL stays in the curve. Drag the slider and sell the whole coin back.</p>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>03</b> — The floor</div><h2 class="reveal">Sell everything. It still stops here.</h2></div><p class="lead reveal">A bonding curve gives back SOL only for tokens sold into it. The 1.5 SOL of backing bought tokens that were burned, so they can never be sold: even if every holder sold every token, that SOL stays in the curve. Drag the slider and sell the whole coin back.</p></div>
     <div class="floorbox">
       <div class="chartcard reveal">
         <svg id="curve" viewBox="0 0 640 360" role="img" aria-label="The pump.fun bonding curve with the floor the backing sets"></svg>
@@ -388,22 +408,19 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band alt" id="rules">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>04</b> — Carved in stone</div>
-    <h2 class="reveal">Four rules no launch can skip.</h2>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>04</b> — Carved in stone</div><h2 class="reveal">Four rules no launch can skip.</h2></div><p class="lead reveal">The server checks every one of them before your wallet ever sees the launch transaction, and the backing is built into the transaction itself.</p></div>
     <div class="tablets">
-      <div class="tablet reveal"><span class="k">先</span><b>No snipes before the backing</b><p>The backing is inside the launch transaction. Nobody can buy in between.</p></div>
-      <div class="tablet reveal"><span class="k">限</span><b>Dev buy capped at 0.5 SOL</b><p>The creator's launch buy can't be bigger than one backing buy, and it lands behind the backing.</p></div>
-      <div class="tablet reveal"><span class="k">一</span><b>One ticker, one image, once</b><p>A ticker or an image already on Azuro can't launch again. No copies.</p></div>
-      <div class="tablet reveal"><span class="k">焼</span><b>Every backed token burned</b><p>The platform holds nothing. You can check the burn on Solscan for every coin.</p></div>
+      <div class="tablet reveal"><i class="no">RULE 1</i><span class="k">先</span><b>No snipes before the backing</b><p>The backing is inside the launch transaction. Nobody can buy in between.</p></div>
+      <div class="tablet reveal"><i class="no">RULE 2</i><span class="k">限</span><b>Dev buy capped at 0.5 SOL</b><p>The creator's launch buy can't be bigger than one backing buy, and it lands behind the backing.</p></div>
+      <div class="tablet reveal"><i class="no">RULE 3</i><span class="k">一</span><b>One ticker, one image, once</b><p>A ticker or an image already on Azuro can't launch again. No copies.</p></div>
+      <div class="tablet reveal"><i class="no">RULE 4</i><span class="k">焼</span><b>Every backed token burned</b><p>The platform holds nothing. You can check the burn on Solscan for every coin.</p></div>
     </div>
   </div>
 </section>
 
 <section class="band" id="wall">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>05</b> — The wall</div>
-    <h2 class="reveal">Every launch is a stone in the wall.</h2>
-    <p class="lead reveal">Each coin backed here adds a stone. Gold stones are the newest, blue stones have graduated to their pool. Tap any stone to open its coin.</p>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>05</b> — The wall</div><h2 class="reveal">Every launch is a stone in the wall.</h2></div><p class="lead reveal">Each coin backed here adds a stone. Gold stones are the newest, blue stones have graduated to their pool. Tap any stone to open its coin.</p></div>
     <div class="wallbox reveal"><div class="wall" id="wallStones"><div class="empty">Loading the wall…</div></div></div>
     <div class="wallnote"><span><i class="g">newest</i><i>backed</i><i class="b">graduated</i></span><span id="wallCount"></span></div>
     <div class="latest" id="latest"></div>
@@ -412,9 +429,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band alt" id="pool">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>06</b> — The pool</div>
-    <h2 class="reveal">The backing comes from one public wallet.</h2>
-    <p class="lead reveal">Every backing buy is paid from the pool. Its balance is live below. When it can't cover a launch, launching waits until it is refilled. Nothing launches unbacked.</p>
+    <div class="head"><div class="t"><div class="eyebrow reveal"><b>06</b> — The pool</div><h2 class="reveal">The backing comes from one public wallet.</h2></div><p class="lead reveal">Every backing buy is paid from the pool. Its balance is live below. When it can't cover a launch, launching waits until it is refilled. Nothing launches unbacked.</p></div>
     <div class="pool">
       <div class="reveal"><div class="big" id="poolBig">—<small>SOL</small></div><div class="addr" id="poolAddr">The pool address appears here once it is connected.</div></div>
       <div class="gauge reveal" id="gauge">
@@ -430,8 +445,8 @@ section.band.alt{background:rgba(226,211,177,.5)}
 
 <section class="band" id="faq">
   <div class="wrap">
-    <div class="eyebrow reveal"><b>07</b> — Questions</div>
-    <h2 class="reveal">Asked and answered.</h2>
+    <div class="faqgrid">
+    <div class="t"><div class="eyebrow reveal"><b>07</b> — Questions</div><h2 class="reveal">Asked and answered.</h2><p class="lead reveal">The short answers. The docs in the terminal go through the transaction, the floor math and the rules line by line.</p><a class="btn sm reveal" href="/app#docs">Read the docs →</a></div>
     <div class="faq">
       <details><summary>What exactly happens when I launch?</summary><p>You sign one transaction in your own wallet. In order, it creates your coin on pump.fun, buys it three times with 0.5 SOL each from the platform's pool, burns every token those buys received, closes the pool's token account, and then (if you chose one) makes your own buy of up to 0.5 SOL. When your buy doesn't fit in the same transaction, it rides in a second one, sent together with the first as a Jito bundle so it lands right behind the backing.</p></details>
       <details><summary>Why can't the 1.5 SOL ever leave?</summary><p>On a bonding curve, SOL comes out only when tokens are sold back in. The backing bought tokens and burned them, so those tokens no longer exist and can never be sold. Everyone else can sell what they bought, but the SOL the burned tokens paid for stays in the curve, and moves with it into the pool when the coin graduates.</p></details>
@@ -441,6 +456,7 @@ section.band.alt{background:rgba(226,211,177,.5)}
       <details><summary>Why one ticker and one image?</summary><p>So nobody can copy a coin that is doing well. A ticker or an image already used on Azuro is refused, including images that are only slightly changed.</p></details>
       <details><summary>What if the pool runs dry?</summary><p>Then launching pauses. The site shows how many launches the pool can still back, and the terminal won't let anyone launch a coin it can't back.</p></details>
       <details><summary>Is Azuro part of pump.fun?</summary><p>No. Azuro is independent. Every coin is created and traded on pump.fun's own program, and graduates to pump.fun's pool like any other coin.</p></details>
+    </div>
     </div>
   </div>
 </section>
@@ -453,17 +469,11 @@ section.band.alt{background:rgba(226,211,177,.5)}
   </div>
 </section>
 
-<section class="finale" id="end">
-  <div class="art" id="endArt"></div>
-  <div class="seaband" id="endSea"><i></i></div>
-  <div class="copy2"><h2>Launch on stone, not on sand.</h2><div class="ctas"><a class="btn red" href="/app#launch">Launch a coin →</a><a class="btn" href="/app">Open the terminal</a></div></div>
-  <div class="fine"><span>Every coin launches on pump.fun. Azuro is not affiliated with pump.fun.</span><span><a href="/app#docs">Docs</a></span></div>
-</section>
 </main>
 
 <div id="toasts" aria-live="polite"></div>
 <script src="/assets/js/config.js?v=1"></script>
 <script src="/assets/js/scene.js?v=1"></script>
-<script src="/assets/js/home.js?v=1"></script>
+<script src="/assets/js/home.js?v=2"></script>
 </body>
 </html>
