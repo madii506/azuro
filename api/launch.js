@@ -349,7 +349,8 @@ async function check(qs) {
       const { global, feeConfig } = await chain();
       const tier = feeConfig && feeConfig.feeTiers && feeConfig.feeTiers[0] && feeConfig.feeTiers[0].fees;
       const bps = tier ? (+tier.protocolFeeBps.toString() + +tier.creatorFeeBps.toString()) : (+global.feeBasisPoints.toString() + +global.creatorFeeBasisPoints.toString());
-      curve = { vq: +(global.initialVirtualSolReserves || global.initialVirtualQuoteReserves).toString() / 1e9,   // SOL curves; the quote field is for other quote mints vt: +global.initialVirtualTokenReserves.toString() / 1e6,
+      // SOL curves start from initialVirtualSolReserves; initialVirtualQuoteReserves is for other quote mints
+      curve = { vq: +(global.initialVirtualSolReserves || global.initialVirtualQuoteReserves).toString() / 1e9, vt: +global.initialVirtualTokenReserves.toString() / 1e6,
         rt: +global.initialRealTokenReserves.toString() / 1e6, supply: +global.tokenTotalSupply.toString() / 1e6, fee: bps / 1e4 };
       if (!(curve.vq > 0 && curve.vt > 0)) curve = null;
     } catch { curve = null; }
