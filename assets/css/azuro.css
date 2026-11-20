@@ -93,3 +93,9 @@ img{display:block;max-width:100%}
 @keyframes tin{from{transform:translateY(16px);opacity:0}}
 
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* drawn icons in seals, tabs and headers */
+.ico{display:inline-block;width:1em;height:1em;vertical-align:-.13em;fill:currentColor;flex:none}
+.seal .ico{width:1.05em;height:1.05em;vertical-align:0}
+.seal.num{font-family:var(--serif);font-weight:800}
+.stampok .ico{width:16px;height:16px}
