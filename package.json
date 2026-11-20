@@ -13,5 +13,10 @@
     "bn.js": "^5.2.1",
     "bs58": "^4.0.1",
     "upng-js": "^2.1.0"
+  },
+  "overrides": {
+    "rpc-websockets": {
+      "uuid": "^11.1.0"
+    }
   }
 }
