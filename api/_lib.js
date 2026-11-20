@@ -8,7 +8,7 @@ const BN = require('bn.js');
 const crypto = require('crypto');
 
 const MOCK = process.env.AZ_MOCK === '1';
-const SITE = (process.env.SITE_URL || 'https://azuro.vercel.app').replace(/\/$/, '');
+const SITE = (process.env.SITE_URL || 'https://azuro-iota.vercel.app').replace(/\/$/, '');
 const RPCS = [process.env.RPC_URL, 'https://api.mainnet-beta.solana.com', 'https://solana-rpc.publicnode.com'].filter(Boolean);
 const B58 = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 
